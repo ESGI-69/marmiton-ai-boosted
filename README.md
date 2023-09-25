@@ -2,6 +2,8 @@
 
 This app is a marmiton boosted with AI. It's a school project for the course "Artificial Intelligence" at ESGI
 
+Endpoints are documented in the [backend readme](./backend/readme.md)
+
 ## Init for dev
 
 > Don't forget to `mv .env.example .env`
