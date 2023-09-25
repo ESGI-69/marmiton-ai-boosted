@@ -1,5 +1,7 @@
-import { prisma } from '../db';
+import { User } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import { prisma } from '../db';
 
 interface CreateUserInput {
   username: string;
@@ -7,10 +9,9 @@ interface CreateUserInput {
   name: string;
 }
 
-const encryptPassword = async (password: string) => {
-  const salt = await bcrypt.genSalt(10);
-  return bcrypt.hash(password, salt);
-};
+export interface JwtPayload {
+  id: number;
+}
 
 export default {
   create: async function ({ username, password, name }: CreateUserInput) {
@@ -18,9 +19,45 @@ export default {
       data: {
         username,
         name,
-        password: await encryptPassword(password),
+        password: await this.encryptPassword(password),
       },
     });
     return user;
+  },
+
+  findById: function (id: number) {
+    return prisma.user.findUniqueOrThrow({
+      where: {
+        id,
+      },
+    });
+  },
+
+  findByUsername: function (username: string) {
+    return prisma.user.findUniqueOrThrow({
+      where: {
+        username,
+      },
+    });
+  },
+
+  encryptPassword: async function(password: string) {
+    const salt = await bcrypt.genSalt(10);
+    return bcrypt.hash(password, salt);
+  },
+
+  checkPassword: function (password: string, hash: string) {
+    return bcrypt.compare(password, hash);
+  },
+
+  generateToken: function ({ id }: User) {
+    if (!process.env.JWT_SECRET) {
+      throw new Error('JWT_SECRET env not set');
+    }
+    const jwtPayload: JwtPayload = { id };
+    return jwt.sign(jwtPayload, process.env.JWT_SECRET, {
+      expiresIn: '1y',
+      algorithm: 'HS256',
+    });
   },
 };
