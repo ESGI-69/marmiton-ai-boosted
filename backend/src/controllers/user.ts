@@ -2,24 +2,12 @@ import { NextFunction, Request, Response } from 'express';
 import userService from '../service/user';
 import checkMandatoryFields from '../utils/checkMandatoryFields';
 
-interface UserObjectPayload {
-  id: number;
-  username: string;
-  name?: string;
-}
-
 export default {
   post: async (req: Request, res: Response, next: NextFunction) => {
     try {
       checkMandatoryFields(['username', 'password'], req.body);
-      const { id, username, name } = await userService.create(req.body);
-      // Remove the password
-      const payload: UserObjectPayload = {
-        id,
-        username,
-        name: name || undefined,
-      };
-      res.status(201).json(payload);
+      const user = await userService.create(req.body);
+      res.status(201).json(user);
     } catch (error) {
       next(error);
     }
@@ -28,7 +16,7 @@ export default {
   login: async (req: Request, res: Response, next: NextFunction) => {
     try {
       checkMandatoryFields(['username', 'password'], req.body);
-      const user = await userService.findByUsername(req.body.username);
+      const user = await userService.findForLogin(req.body.username);
       if (!user) {
         return res.status(401).send({
           code: 'invalid_credentials',
@@ -50,13 +38,7 @@ export default {
 
   me: (req: Request, res: Response, next: NextFunction) => {
     try {
-      if (!req.user) return next(new Error('NOT LOGGED'));
-      const payload: UserObjectPayload = {
-        id: req.user.id,
-        username: req.user.username,
-        name: req.user.name || undefined,
-      };
-      res.status(200).send(payload);
+      res.status(200).send(req.user);
     } catch (error) {
       next(error);
     }

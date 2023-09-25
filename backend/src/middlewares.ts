@@ -1,12 +1,11 @@
 import jwt from 'jsonwebtoken';
 import userService, { JwtPayload } from './service/user';
-import { User } from '@prisma/client';
 import { NextFunction, Request, Response } from 'express';
 
 // Add the user property to the Request interface
 declare module 'express-serve-static-core' {
   interface Request {
-    user?: User
+    user?: { id: number, username: string, name: string | null }
   }
 }
 

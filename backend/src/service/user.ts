@@ -21,6 +21,11 @@ export default {
         name,
         password: await this.encryptPassword(password),
       },
+      select: {
+        id: true,
+        username: true,
+        name: true,
+      },
     });
     return user;
   },
@@ -30,10 +35,15 @@ export default {
       where: {
         id,
       },
+      select: {
+        id: true,
+        username: true,
+        name: true,
+      },
     });
   },
 
-  findByUsername: function (username: string) {
+  findForLogin: function (username: string) {
     return prisma.user.findUniqueOrThrow({
       where: {
         username,
