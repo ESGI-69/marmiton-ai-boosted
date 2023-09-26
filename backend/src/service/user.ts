@@ -25,6 +25,8 @@ export default {
         id: true,
         username: true,
         name: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
     return user;
@@ -39,6 +41,8 @@ export default {
         id: true,
         username: true,
         name: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
   },
