@@ -159,7 +159,7 @@
       }
     ],
     "no-else-return": "error",
-    "vue/component-api-style": [ "error", [ "composition" ] ],
+    "vue/component-api-style": [ "error", [ "script-setup" ] ],
     "no-trailing-spaces": "error",
     "prefer-destructuring": [
       "error",
