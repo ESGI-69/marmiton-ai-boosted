@@ -47,4 +47,20 @@ export default {
     });
     return recipe;
   },
+
+  getById: function (id: number) {
+    return prisma.recipe.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        ingredientsWithQuantity: {
+          include: {
+            ingredient: true,
+          },
+        },
+        ratings: true,
+      },
+    });
+  },
 };

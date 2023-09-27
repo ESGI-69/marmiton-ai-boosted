@@ -4,6 +4,7 @@ import errorHandler from './errorHandler';
 
 import userRouter from './routes/user';
 import authRouter from './routes/auth';
+import recipeRouter from './routes/recipe';
 import { populateUser } from './middlewares';
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(populateUser);
 
 app.use('/users', userRouter);
 app.use('/auth', authRouter);
+app.use('/recipes', recipeRouter);
 
 app.use(errorHandler);
 
