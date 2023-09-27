@@ -3,11 +3,17 @@
     <h1>
       Home
     </h1>
-    <button @click="authStore.login({ username: 'gatien1', password: '123456'})">
-      Login
-    </button>
+    <FilterPill
+      v-model:active="active"
+    >
+      🥬 Végétarien
+    </FilterPill>
   </main>
 </template>
 
 <script setup>
+import FilterPill from '@/components/lib/FilterPill.vue';
+import { ref } from 'vue';
+
+const active = ref(false);
 </script>
