@@ -10,7 +10,9 @@
       <span>Home > Breadcrumb</span>
       <Dropdown>
         <template #toggler>
-          <button>Menu</button>
+          <Button type="light">
+            Dropdown
+          </Button>
         </template>
         <DropdownList>
           <DropdownListItem>Test</DropdownListItem>
@@ -28,4 +30,5 @@ import SearchBar from '@/components/lib/SearchBar.vue';
 import Dropdown from '@/components/lib/Dropdown.vue';
 import DropdownList from '@/components/lib/DropdownList.vue';
 import DropdownListItem from '@/components/lib/DropdownListItem.vue';
+import Button from '@/components/lib/Button.vue';
 </script>

@@ -6,7 +6,6 @@
 
 <style>
 .dropdown__list__item {
-    margin: var(--space-1) 0;
     padding: var(--space-1) var(--space-4);
     font-weight: 500;
     cursor: pointer;
