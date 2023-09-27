@@ -16,9 +16,9 @@ import Input from '@/components/lib/Input.vue';
 import { ref } from 'vue';
 
 const inputValue = ref('');
-const handleDebounce = (value) => {
-  // do something with the value
-};
+//const handleDebounce = (value) => {
+// do something with the value
+//};
 </script>
 
 
