@@ -28,6 +28,7 @@ const onClick = () => {
     font-size: var(--text-sm);
     padding: var(--space-1) var(--space-3);
     border-radius: 999px;
+    font-weight: 500;
     &--active {
         background: var(--color-primary);
         color: var(--color-white);

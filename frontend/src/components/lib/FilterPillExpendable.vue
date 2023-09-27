@@ -64,52 +64,54 @@ const onSelection = (option) => {
 
 <style lang="scss" scoped>
 .filter-pill-expendable {
-	$ref: &;
-	display: flex;
-	align-items: center;
-	background: var(--color-white);
-	border-radius: 999px;
+  $ref: &;
+  display: flex;
+  align-items: center;
+  background: var(--color-white);
+  border-radius: 999px;
 
-	&--active {
-		outline: 1px solid var(--color-border);
-		outline-offset: -1px;
+  &--active {
+    outline: 1px solid var(--color-border);
+    outline-offset: -1px;
 
-		#{$ref} {
-			&__button {
-				background: var(--color-primary);
-				color: var(--color-white);
-			}
+    #{$ref} {
+      &__button {
+        background: var(--color-primary);
+        color: var(--color-white);
+      }
 
-			&__options {
-				display: flex;
-			}
-		}
-	}
+      &__options {
+        display: flex;
+      }
+    }
+  }
 
-	&__button {
-		background: var(--color-background-soft);
-		color: var(--color-text);
-		font-size: var(--text-sm);
-		padding: var(--space-1) var(--space-3);
-		border-radius: 999px;
-	}
+  &__button {
+    background: var(--color-background-soft);
+    color: var(--color-text);
+    font-size: var(--text-sm);
+    padding: var(--space-1) var(--space-3);
+    border-radius: 999px;
+    font-weight: 500;
+  }
 
-	&__options {
-		display: none;
-		align-items: center;
-		gap: var(--space-1);
-		padding: 0 var(--space-2);
+  &__options {
+    display: none;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 0 var(--space-2);
 
-		&__option {
-			font-size: var(--text-xs);
-			padding: var(--space-1) var(--space-2);
-			border-radius: 999px;
+    &__option {
+      font-size: var(--text-xs);
+      font-weight: 500;
+      padding: var(--space-1) var(--space-2);
+      border-radius: 999px;
 
-			&--active {
-				background: var(--color-primary);
-				color: var(--color-white);
-			}
-		}
-	}
+      &--active {
+        background: var(--color-primary);
+        color: var(--color-white);
+      }
+    }
+  }
 }
 </style>
