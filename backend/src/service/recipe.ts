@@ -47,4 +47,40 @@ export default {
     });
     return recipe;
   },
+
+  getById: function (id: number) {
+    return prisma.recipe.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        ingredientsWithQuantity: {
+          include: {
+            ingredient: true,
+          },
+        },
+        ratings: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                username: true,
+                name: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  },
+
+  checkExist: async function (id: number) {
+    return (await prisma.recipe.count({
+      where: {
+        id,
+      },
+    })) === 1;
+  },
 };
