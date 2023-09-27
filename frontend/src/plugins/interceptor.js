@@ -9,9 +9,6 @@ export default (axios, router) => {
   axios.interceptors.request.use(
     (config) => {
       const token = Cookies.get(import.meta.env.VITE_COOKIE_TOKEN_NAME);
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
       return config;
     },
   );

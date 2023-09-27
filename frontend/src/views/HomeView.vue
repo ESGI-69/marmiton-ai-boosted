@@ -19,6 +19,9 @@
       </Dropdown>
       <StarRating :rating="3" />
     </div>
+    <button @click="authStore.login({ username: 'gatien1', password: '123456'})">
+      Login
+    </button>
   </main>
 </template>
 
