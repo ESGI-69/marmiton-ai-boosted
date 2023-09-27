@@ -1,5 +1,8 @@
 import { prisma } from '../db';
 
+import ingredientService from './ingredient';
+import ingredientWithQuantityService from './ingredientWithQuantity';
+
 interface CreateRecipeInput {
   title: string;
   description: string;
@@ -12,17 +15,8 @@ interface CreateRecipeInput {
 
 export default {
   create: async function (recipeInput: CreateRecipeInput) {
-    const ingredients = await prisma.$transaction(
-      recipeInput.ingredientsWithQuantities.map(({ name }) => prisma.ingredient.upsert({
-        where: {
-          name,
-        },
-        create: {
-          name,
-        },
-        update: {},
-      })),
-    );
+    const ingredients = await ingredientService.createManyIfNotExist(recipeInput.ingredientsWithQuantities);
+
     const ingredientIdsWithQuantities = recipeInput.ingredientsWithQuantities.map(({ name, quantity }) => {
       const ingredient = ingredients.find((ingredient) => ingredient.name === name);
       if (!ingredient) throw new Error('FAIL TO CREATE INGREDIENT WITH QUANTITY');
@@ -31,16 +25,7 @@ export default {
         quantity,
       };
     });
-    const ingredientsWithQuantity = await prisma.$transaction(
-      ingredientIdsWithQuantities.map(({ ingredientId, quantity }) => prisma.ingredientsWithQuantity.create({ data: {
-        ingredient: {
-          connect: {
-            id: ingredientId,
-          },
-        },
-        quantity,
-      } })),
-    );
+    const ingredientsWithQuantity = await ingredientWithQuantityService.createMany(ingredientIdsWithQuantities);
 
     const recipe = await prisma.recipe.create({
       data: {
