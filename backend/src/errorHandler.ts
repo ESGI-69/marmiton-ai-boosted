@@ -20,7 +20,7 @@ const errorHandler: ErrorRequestHandler = (err, req, res, _next) => {
     };
     res.status(400).send(payload);
   } else {
-    res.status(500).send(err);
+    res.status(400).send({ message: err.message });
   }
 };
 

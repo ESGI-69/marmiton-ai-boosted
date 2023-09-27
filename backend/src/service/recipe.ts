@@ -59,8 +59,28 @@ export default {
             ingredient: true,
           },
         },
-        ratings: true,
+        ratings: {
+          include: {
+            author: {
+              select: {
+                id: true,
+                username: true,
+                name: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
       },
     });
+  },
+
+  checkExist: async function (id: number) {
+    return (await prisma.recipe.count({
+      where: {
+        id,
+      },
+    })) === 1;
   },
 };

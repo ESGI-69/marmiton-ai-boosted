@@ -1,20 +1,38 @@
 import { prisma } from '../db';
-import { Recipe } from '@prisma/client';
 
 export default {
-  add: function (recipe: Recipe, { notation, comment, authorId }: { notation: number, comment: string, authorId: number }) {
-    prisma.rating.create({
+  add: function (recipeId: number, { notation, comment, authorId }: { notation: number, comment: string, authorId: number }) {
+    return prisma.rating.create({
       data: {
         notation,
         comment,
         recipe: {
           connect: {
-            id: recipe.id,
+            id: recipeId,
           },
         },
         author: {
           connect: {
             id: authorId,
+          },
+        },
+      },
+    });
+  },
+
+  getRatingById: function (id: number) {
+    return prisma.rating.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        author: {
+          select: {
+            id: true,
+            username: true,
+            name: true,
+            createdAt: true,
+            updatedAt: true,
           },
         },
       },
