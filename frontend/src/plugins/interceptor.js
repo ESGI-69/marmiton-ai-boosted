@@ -1,3 +1,5 @@
+import Cookies from 'js-cookie';
+
 /**
  * Intercept all requests and add the Authorization header if the user is logged in
  * @param axios { import('axios').AxiosInstance } Axios instance
@@ -6,7 +8,7 @@
 export default (axios, router) => {
   axios.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem('token');
+      const token = Cookies.get(import.meta.env.VITE_COOKIE_TOKEN_NAME);
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -18,7 +20,7 @@ export default (axios, router) => {
     (response) => response,
     (error) => {
       if (error.response.status === 401) {
-        localStorage.removeItem('token');
+        Cookies.remove(import.meta.env.VITE_COOKIE_TOKEN_NAME);
         router.push({ name: 'login' });
       }
       return Promise.reject(error);
