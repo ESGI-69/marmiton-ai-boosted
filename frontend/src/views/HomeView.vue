@@ -1,42 +1,52 @@
 
 <template>
   <main class="container">
-    <SearchBar />
-    <Filters />
-    <div>
-      <Breadcrumb />
-      <Dropdown>
-        <template #toggler>
-          <Button type="light">
-            Dropdown
-          </Button>
-        </template>
-        <DropdownList>
-          <DropdownListItem>Test</DropdownListItem>
-          <DropdownListItem>Test</DropdownListItem>
-          <DropdownListItem>Test</DropdownListItem>
-        </DropdownList>
-      </Dropdown>
-      <StarRating :rating="3" />
-    </div>
+    <section class="searchbar">
+      <SearchBar />
+    </section>
+    <section class="section">
+      <h2 class="section__title">
+        Recommendations
+      </h2>
+    </section>
+    <section>
+      <h2 class="section__title">
+        Recettes de saison 🍁
+      </h2>
+      <p class="section__description">
+        Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repellat cum impedit autem sint quis dolorum,
+        repellendus
+        veniam possimus repudiandae excepturi deserunt iure obcaecati reprehenderit odit? Veniam doloribus voluptates
+        labore
+        incidunt.
+      </p>
+    </section>
   </main>
-  <Recipe
-    :notation="4"
-    title="donut"
-    description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum."
-    :steps="['test1', 'test2', 'test3']"
-    :ingredients="['zebi', 'zeba', 'zebo']"
-  />
 </template>
 
 <script setup>
-import Filters from '@/components/Filters.vue';
-import SearchBar from '@/components/lib/SearchBar.vue';
-import Dropdown from '@/components/lib/Dropdown.vue';
-import DropdownList from '@/components/lib/DropdownList.vue';
-import DropdownListItem from '@/components/lib/DropdownListItem.vue';
-import Button from '@/components/lib/Button.vue';
-import Breadcrumb from '@/components/lib/Breadcrumb.vue';
-import StarRating from '@/components/lib/StarRating.vue';
-import Recipe from '@/components/Recipe.vue';
+import SearchBar from '@/components/RecipesSearchBar.vue';
 </script>
+
+
+<style lang="scss" scoped>
+.searchbar {
+  margin-bottom: 5rem;
+}
+
+.section {
+  margin-bottom: 5rem;
+
+  &__title {
+    font-size: var(--text-xl);
+    margin-bottom: var(--space-4);
+    font-weight: 600;
+  }
+
+  &__description {
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-4);
+    color: var(--color-text-secondary);
+  }
+}
+</style>
