@@ -1,5 +1,7 @@
 <template>
-  <AppHeader />
+  <div class="container">
+    <AppHeader />
+  </div>
   <RouterView />
 </template>
 
