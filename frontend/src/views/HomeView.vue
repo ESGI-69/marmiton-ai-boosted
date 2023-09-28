@@ -20,6 +20,13 @@
       <StarRating :rating="3" />
     </div>
   </main>
+  <Recipe
+    :notation="4"
+    title="donut"
+    description="Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, voluptatum."
+    :steps="['test1', 'test2', 'test3']"
+    :ingredients="['zebi', 'zeba', 'zebo']"
+  />
 </template>
 
 <script setup>
@@ -31,4 +38,5 @@ import DropdownListItem from '@/components/lib/DropdownListItem.vue';
 import Button from '@/components/lib/Button.vue';
 import Breadcrumb from '@/components/lib/Breadcrumb.vue';
 import StarRating from '@/components/lib/StarRating.vue';
+import Recipe from '@/components/Recipe.vue';
 </script>
