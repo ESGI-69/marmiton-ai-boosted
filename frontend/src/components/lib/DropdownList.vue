@@ -24,6 +24,8 @@ const active = inject('active');
     border: 1px solid var(--color-border);
     border-radius: 8px;
     padding: var(--space-1) 0;
+    width: -moz-available;
+    width: max-content;
 }
 
 
