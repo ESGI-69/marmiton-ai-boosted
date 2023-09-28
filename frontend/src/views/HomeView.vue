@@ -1,6 +1,6 @@
 
 <template>
-  <main>
+  <main class="container">
     <SearchBar />
     <Filters />
     <div>
