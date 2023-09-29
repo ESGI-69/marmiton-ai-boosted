@@ -9,11 +9,13 @@
   <div class="searchbar__results">
     <slot name="results" />
   </div>
+  <Filters />
 </template>
 
 <script setup>
 import Input from '@/components/lib/Input.vue';
 import { ref } from 'vue';
+import Filters from '@/components/Filters.vue';
 
 const inputValue = ref('');
 //const handleDebounce = (value) => {
@@ -25,5 +27,6 @@ const inputValue = ref('');
 <style scoped lang="scss">
 .searchbar__input {
   height: 50px;
+  margin-bottom: var(--space-4);
 }
 </style>
