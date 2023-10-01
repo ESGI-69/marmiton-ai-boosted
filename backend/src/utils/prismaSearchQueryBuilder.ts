@@ -27,7 +27,7 @@ export default (queryParams: QueryParams): PrismaQuery => {
         contains: query[key],
         mode: 'insensitive',
       },
-    })
+    }),
   );
   return prismaQuery;
 };
