@@ -1,6 +1,5 @@
 import { ValidationError } from './customErrors';
 
-
 /*
 ** This function checks if there are any forbidden query params
 ** @params allowedQueryParams: string[] - array of allowed query params
