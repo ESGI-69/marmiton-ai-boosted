@@ -14,6 +14,12 @@
         Home
       </RouterLink>
       <RouterLink
+        to="/recipes"
+        class="header__nav__link"
+      >
+        Recipes
+      </RouterLink>
+      <RouterLink
         to="/about"
         class="header__nav__link"
       >
