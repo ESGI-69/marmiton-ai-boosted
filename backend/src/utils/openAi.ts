@@ -18,7 +18,7 @@ class OpenAIQueryBuilder {
     return OpenAIQueryBuilder.instance;
   }
 
-  public async generatePrompt(prompt: string, systemMessage: string, model: string): Promise<OpenAI.Chat.Completions.ChatCompletion.Choice[]> {
+  public async generatePrompt(prompt: string, systemMessage: string, model: string): Promise<OpenAI.Chat.Completions.ChatCompletion> {
     const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] =  [
       {
         role: 'system',
@@ -34,8 +34,7 @@ class OpenAIQueryBuilder {
       messages,
       model,
     });
-
-    return response.choices;
+    return response;
   }
 }
 
