@@ -6,8 +6,8 @@ class OpenAIQueryBuilder {
 
   private constructor() {
     const apiKey = process.env.OPENAI_API_KEY || '';
-    const dangerouslyAllowBrowser = process.env.OPENAI_DANGEROUSLY_ALLOW_BROWSER === 'true';
-    const clientOptions: ClientOptions = { apiKey, dangerouslyAllowBrowser };
+    //const dangerouslyAllowBrowser = process.env.OPENAI_DANGEROUSLY_ALLOW_BROWSER === 'true';
+    const clientOptions: ClientOptions = { apiKey };
     this.client = new OpenAI(clientOptions);
   }
 
