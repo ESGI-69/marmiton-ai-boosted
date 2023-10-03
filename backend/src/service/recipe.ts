@@ -85,7 +85,7 @@ export default {
     })) === 1;
   },
 
-  search: async function (query: { title: string; description: string }) {
+  search: async function (query: { title?: string; description?: string }) {
     const prismaQuery = prismaSearchQueryBuilder(query);
     const recipes = await prisma.recipe.findMany(prismaQuery);
     return recipes;

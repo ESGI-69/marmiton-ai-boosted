@@ -17,8 +17,7 @@ export default {
   search: async (req: Request, res: Response, next: NextFunction) => {
     try {
       checkQueryParams(['title', 'description'], req.query);
-      const { title, description } = req.query as { title?: string; description?: string; };
-      const recipes = await recipeSerice.search({ title: title || '', description: description || '' });
+      const recipes = await recipeSerice.search(req.query);
       res.status(200).json(recipes);
     } catch (error) {
       next(error);
