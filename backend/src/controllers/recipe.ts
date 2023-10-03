@@ -28,12 +28,10 @@ export default {
   searchAi: async (req: Request, res: Response, next: NextFunction) => {
     try {
       const openAiQueryBuilder = OpenAIQueryBuilder.getInstance();
-      // console.log(req.body.prompt);
       const prompt = req.body.prompt;
       const systemMessage = 'Tu es un chatbot et tu es un chef étoilé au guide michelin et tu as une quinzaine d\'années d\'expérience dans le métier avec plusieurs concours culinaires gagnés à l\'internationnal, ton but est de donnée des recettes.';
       const model = 'gpt-3.5-turbo';
       const openAiResponse = await openAiQueryBuilder.generatePrompt(prompt, systemMessage, model);
-      // console.log(openAiResponse);
       res.status(200).send(openAiResponse);
     } catch (error) {
       next(error);
