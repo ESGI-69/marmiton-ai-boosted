@@ -63,7 +63,7 @@ Token is a json web token
 
 # Recipe
 
-## GET /recipe/:id
+## GET /recipes/:id
 
 ### Response
 
@@ -142,7 +142,7 @@ Token is a json web token
 }
 ```
 
-## POST /recipe/:id/ratings
+## POST /recipes/:id/ratings
 
 > Need bearer token authorization header
 
@@ -180,4 +180,28 @@ Token is a json web token
         "updatedAt": "2023-09-27T20:23:40.567Z"
     }
 }
+```
+## POST /recipes/search
+
+### Request
+
+```json
+{
+    "prompt": "pizza"
+}
+```
+
+### Response
+
+```json
+[
+    {
+        "index": 0,
+        "message": {
+            "role": "assistant",
+            "content": "Bien sûr, je peux vous donner une délicieuse recette de pizza maison. Voici les ingrédients dont vous aurez besoin :\n\n..."
+        },
+        "finish_reason": "stop"
+  }
+]
 ```
