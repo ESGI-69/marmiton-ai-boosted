@@ -5,6 +5,7 @@ import { isLogged } from '../middlewares';
 
 const router = Router();
 
+router.get('/', recipeController.search);
 router.get('/:id', recipeController.get);
 router.post('/:id/ratings', isLogged, ratingController.addRating);
 

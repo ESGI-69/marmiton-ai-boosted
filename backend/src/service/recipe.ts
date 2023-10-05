@@ -1,4 +1,5 @@
 import { prisma } from '../db';
+import prismaSearchQueryBuilder from '../utils/prismaSearchQueryBuilder';
 
 import ingredientService from './ingredient';
 import ingredientWithQuantityService from './ingredientWithQuantity';
@@ -82,5 +83,11 @@ export default {
         id,
       },
     })) === 1;
+  },
+
+  search: async function (query: { title?: string; description?: string }) {
+    const prismaQuery = prismaSearchQueryBuilder(query);
+    const recipes = await prisma.recipe.findMany(prismaQuery);
+    return recipes;
   },
 };

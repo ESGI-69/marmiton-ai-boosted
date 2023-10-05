@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import recipeSerice from '../service/recipe';
 import checkParams from '../utils/checkParams';
+import checkQueryParams from '../utils/checkQueryParams';
 
 export default {
   get: async (req: Request, res: Response, next: NextFunction) => {
@@ -13,4 +14,14 @@ export default {
       next(error);
     }
   },
+  search: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      checkQueryParams(['title', 'description'], req.query);
+      const recipes = await recipeSerice.search(req.query);
+      res.status(200).json(recipes);
+    } catch (error) {
+      next(error);
+    }
+  },
+
 };
