@@ -181,7 +181,7 @@ Token is a json web token
     }
 }
 ```
-## POST /recipes/search
+## POST /recipes/search-ai
 
 ### Request
 
