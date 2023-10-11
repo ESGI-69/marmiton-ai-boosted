@@ -8,5 +8,7 @@ const router = Router();
 router.get('/', recipeController.search);
 router.get('/:id', recipeController.get);
 router.post('/:id/ratings', isLogged, ratingController.addRating);
+router.post('/search', recipeController.search);
+router.post('/search-ai', recipeController.searchAi);
 
 export default router;

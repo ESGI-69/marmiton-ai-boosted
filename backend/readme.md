@@ -63,7 +63,7 @@ Token is a json web token
 
 # Recipe
 
-## GET /recipe/:id
+## GET /recipes/:id
 
 ### Response
 
@@ -142,7 +142,7 @@ Token is a json web token
 }
 ```
 
-## POST /recipe/:id/ratings
+## POST /recipes/:id/ratings
 
 > Need bearer token authorization header
 
@@ -179,5 +179,69 @@ Token is a json web token
         "createdAt": "2023-09-27T20:23:40.567Z",
         "updatedAt": "2023-09-27T20:23:40.567Z"
     }
+}
+```
+## POST /recipes/search-ai
+
+### Request
+
+```json
+{
+    "prompt": "pizza"
+}
+```
+
+### Response
+
+```json
+{
+  "title": "Pizza Margherita",
+  "description": "Une délicieuse pizza classique avec une garniture de tomates, de mozzarella et de basilic.",
+  "ingredientsWithQuantity": [
+    {
+      "quantity": "300g",
+      "ingredient": "pâte à pizza"
+    },
+    {
+      "quantity": "200g",
+      "ingredient": "sauce tomate"
+    },
+    {
+      "quantity": "200g",
+      "ingredient": "mozzarella"
+    },
+    {
+      "quantity": "2",
+      "ingredient": "tomates"
+    },
+    {
+      "quantity": "quelques feuilles",
+      "ingredient": "basilic frais"
+    },
+    {
+      "quantity": "sel",
+      "ingredient": "sel"
+    },
+    {
+      "quantity": "poivre",
+      "ingredient": "poivre"
+    },
+    {
+      "quantity": "huile d'olive",
+      "ingredient": "huile d'olive"
+    }
+  ],
+  "steps": [
+    "Préchauffer le four à 220°C.",
+    "Étaler la pâte à pizza sur une plaque de cuisson recouverte de papier sulfurisé.",
+    "Répartir la sauce tomate sur la pâte.",
+    "Couper les tomates en tranches et les disposer sur la sauce tomate.",
+    "Couper la mozzarella en tranches et les répartir sur les tomates.",
+    "Ajouter quelques feuilles de basilic frais.",
+    "Assaisonner avec du sel et du poivre selon votre goût.",
+    "Arroser d'un filet d'huile d'olive.",
+    "Enfourner la pizza pendant environ 15-20 minutes, ou jusqu'à ce que la pâte soit bien dorée et croustillante.",
+    "Retirer du four et laisser reposer quelques minutes avant de découper et de déguster."
+  ]
 }
 ```
