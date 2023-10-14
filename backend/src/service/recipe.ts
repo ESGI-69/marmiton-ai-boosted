@@ -16,9 +16,7 @@ interface CreateRecipeInput {
 
 export default {
   create: async function (recipeInput: CreateRecipeInput) {
-    const rawIngredients = await ingredientService.createManyIfNotExist(recipeInput.ingredientsWithQuantities);
-
-    const ingredients = rawIngredients.filter(({ name }) => name.toLocaleLowerCase() !== 'sel' && name.toLocaleLowerCase() !== 'poivre');
+    const ingredients = await ingredientService.createManyIfNotExist(recipeInput.ingredientsWithQuantities);
 
     const ingredientIdsWithQuantities = recipeInput.ingredientsWithQuantities.map(({ name, quantity }) => {
       const ingredient = ingredients.find((ingredient) => ingredient.name === name);
