@@ -19,7 +19,7 @@ class OpenAIQueryBuilder {
   }
 
   public async generatePrompt(prompt: string, systemMessage: string, model: string): Promise<OpenAI.Chat.Completions.ChatCompletion> {
-    const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] =  [
+    const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
       {
         role: 'system',
         content: systemMessage,
