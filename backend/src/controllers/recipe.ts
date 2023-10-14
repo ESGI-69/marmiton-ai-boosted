@@ -38,7 +38,8 @@ export default {
       const exisitingRecipie = await recipeSerice.checkIfTitleExist(openAiRecipie.title);
       if (exisitingRecipie) {
         console.warn(`Recipie ${openAiRecipie.title} allready present in the database`);
-        return res.status(200).send(exisitingRecipie);
+        const recipe = await recipeSerice.getById(exisitingRecipie.id);
+        return res.status(200).send(recipe);
       }
       const recipe = await recipeSerice.create(openAiRecipie);
       res.status(200).send(recipe);
