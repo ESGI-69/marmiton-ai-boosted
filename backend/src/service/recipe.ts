@@ -85,6 +85,10 @@ export default {
     })) === 1;
   },
 
+  checkIfTitleExist: async function (title: string) {
+    return (await prisma.recipe.findFirst({ where: { title: { equals: title, mode: 'insensitive' } } })) || false;
+  },
+
   search: async function (query: { title?: string; description?: string }) {
     const prismaQuery = prismaSearchQueryBuilder(query);
     const recipes = await prisma.recipe.findMany(prismaQuery);
