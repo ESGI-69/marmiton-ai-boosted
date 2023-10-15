@@ -25,15 +25,22 @@
       <h2>
         Ingredients
       </h2>
-      <ul>
-        <li
-          v-for="ingredient in ingredients"
-          :key="ingredient"
-          class="recipe__ingredients__ingredient"
-        >
-          {{ ingredient }}
-        </li>
-      </ul>
+      <table>
+        <tbody>
+          <tr
+            v-for="ingredient in ingredients"
+            :key="ingredient"
+            class="recipe__ingredients__ingredient"
+          >
+            <td class="recipe__ingredients__ingredient__quantity">
+              {{ ingredient.quantity }}
+            </td>
+            <td class="recipe__ingredients__ingredient__name">
+              {{ ingredient.name }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
     <div class="recipe__steps">
       <h2>
@@ -62,7 +69,7 @@ defineProps({
   },
   notation: {
     type: Number,
-    default: 5,
+    default: 4.2,
   },
   title: {
     type: String,
@@ -141,10 +148,32 @@ defineProps({
     }
 
     &__ingredient, &__step {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-4);
       font-size: var(--text-md);
+    }
+
+    &__ingredient {
+      &__quantity {
+        font-weight: 500;
+      }
+      &__name:first-letter {
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  &__steps {
+
+    &__step {
+      margin-bottom: var(--space-2);
+    }
+
+    ol {
+      padding-left: var(--space-8);
+      list-style: decimal;
+
+      li::marker {
+        font-weight: 500;
+      }
     }
   }
 }

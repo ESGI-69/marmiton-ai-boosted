@@ -38,10 +38,10 @@ $container-max-widths: (
   @each $key, $value in $breakpoints {
     @media screen and (min-width: $value) {
       max-width: map.get($container-max-widths, $key);
-      @if $key == xs {
-        padding-left: 1rem;
-        padding-right: 1rem;
-      }
+      // @if $key == xs {
+      //   padding-left: 1rem;
+      //   padding-right: 1rem;
+      // }
     }
   }
 }
