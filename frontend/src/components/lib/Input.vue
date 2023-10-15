@@ -22,7 +22,11 @@ const props = defineProps({
     default: 1000,
   },
 });
-const emits = defineEmits([ 'update:modelValue', 'debounce' ]);
+const emits = defineEmits([
+  'update:modelValue',
+  'debounce',
+  'input',
+]);
 
 let timeout;
 const debounce = (fn, delay) => {
@@ -32,6 +36,7 @@ const debounce = (fn, delay) => {
 
 const handleInput = (e) => {
   // v-model value update
+  emits('input', e.target.value);
   emits('update:modelValue', e.target.value);
   // debounce event
   debounce(() => emits('debounce', e.target.value), props.debounceDelay);
