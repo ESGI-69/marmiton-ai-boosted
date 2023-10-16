@@ -39,6 +39,7 @@ defineProps({
 
   &:disabled {
     cursor: not-allowed;
+    background: var(--color-primary-light);
   }
 
   &--light {
