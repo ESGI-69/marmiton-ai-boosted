@@ -3,12 +3,23 @@ import { defineStore } from 'pinia';
 import api from '@/plugins/axios';
 
 export const useRecipeStore = defineStore('recipeStore', {
+  getters: {
+    ratings: (state) => state.recipe.ratings.map((rating) => ({
+      notation: rating.notation,
+      author: rating.author.name,
+      comment: rating.comment,
+      createdAt: rating.createdAt,
+    })),
+  },
+
   state: () => ({
     recipe: {},
     isRecipeLoading: false,
 
     searchResults: [],
     isSearchRecipeLoading: false,
+
+    isReviewRecipeLoading: false,
   }),
 
   actions: {
@@ -32,9 +43,21 @@ export const useRecipeStore = defineStore('recipeStore', {
         this.searchResults = data;
         return;
       } catch (error) {
-
+        throw error.response.data;
       } finally {
         this.isSearchRecipeLoading = false;
+      }
+    },
+
+    async reviewRecipe(id, { notation, comment }) {
+      this.isReviewRecipeLoading = true;
+      try {
+        const { data } = await api.post(`recipes/${id}/ratings`, { notation, comment });
+        this.recipe.ratings.push(data);
+      } catch (error) {
+        throw error.response.data;
+      } finally {
+        this.isReviewRecipeLoading = false;
       }
     },
   },
