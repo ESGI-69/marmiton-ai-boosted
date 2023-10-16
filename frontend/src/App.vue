@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <AppHeader />
+    <RouterView />
   </div>
-  <RouterView />
 </template>
 
 <script setup>
