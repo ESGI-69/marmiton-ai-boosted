@@ -14,38 +14,100 @@
         :ingredients="recipe.ingredientsWithQuantity.map(ingredient => ({ name: ingredient.ingredient.name, quantity: ingredient.quantity }))"
       />
     </section>
-    <section>
-      <h2 class="recipe__subtitle">
+    <section class="recipe__comment">
+      <h2 class="subtitle">
         Notez la recette
       </h2>
+      <Textarea
+        v-model="review.comment"
+        class="recipe__comment__textarea"
+        placeholder="Commentez à propos de cette recette..."
+      />
+      <MultiStarsRating
+        v-model="review.notation"
+        class="recipe__comment__stars"
+        clickable
+      />
+      <Loader
+        v-if="recipeStore.isReviewRecipeLoading"
+        size="small"
+        class="recipe__comment__loader"
+      />
+      <Button
+        class="recipe__comment__button"
+        :disabled="!review.notation || !review.comment"
+        @click="postComment"
+      >
+        Commenter
+      </Button>
     </section>
   </main>
 </template>
 
 <script setup>
 import { useRoute } from 'vue-router';
-import { computed } from 'vue';
+import { computed, reactive } from 'vue';
 import { useRecipeStore } from '@/stores/recipeStore';
+import Button from '@/components/lib/Button.vue';
+import Loader from '@/components/lib/Loader.vue';
+import MultiStarsRating from '@/components/lib/MultiStarsRating.vue';
 import Recipe from '@/components/Recipe.vue';
+import Textarea from '@/components/lib/Textarea.vue';
 
 const route = useRoute();
 const recipeStore = useRecipeStore();
+
+const review = reactive({
+  notation: null,
+  comment: '',
+});
 
 const isRecipeLoading = computed(() => recipeStore.isRecipeLoading);
 const recipe = computed(() => recipeStore.recipe);
 
 recipeStore.getRecipe(route.params.id);
+
+const postComment = async () => {
+  await recipeStore.reviewRecipe(route.params.id, review);
+  review.notation = null;
+  review.comment = '';
+};
 </script>
 
 <style lang="scss" scoped>
+.subtitle {
+  margin-bottom: var(--space-1);
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
 .recipe {
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
-  &__subtitle {
-    margin-bottom: var(--space-4);
-    font-size: var(--text-xl);
-    font-weight: 600;
+
+  &__comment {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    grid-template-columns: 1fr auto 1fr;
+    gap: var(--space-3);
+    grid-template-areas: "subtitle subtitle subtitle" "textarea textarea textarea" "stars loader button";
+
+    .subtitle {
+      grid-area: subtitle;
+    }
+    &__textarea {
+      grid-area: textarea;
+    }
+    &__stars {
+      grid-area: stars;
+    }
+    &__loader {
+      grid-area: loader;
+    }
+    &__button {
+      grid-area: button;
+      justify-self: right;
+    }
   }
 }
 </style>
