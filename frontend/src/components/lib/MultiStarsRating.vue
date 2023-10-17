@@ -20,7 +20,7 @@
       />
     </svg>
     <span
-      v-if="modelValue && textVisable"
+      v-if="modelValue && textVisible"
       class="multi-stars-rating__rating"
     >{{ modelValue }}/{{ max }}</span>
   </div>
@@ -41,7 +41,7 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  textVisable: {
+  textVisible: {
     type: Boolean,
     default: true,
   },

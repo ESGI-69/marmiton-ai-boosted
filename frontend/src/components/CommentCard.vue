@@ -10,7 +10,7 @@
       <p>{{ comment }}</p>
       <MultiStarsRating
         :model-value="notation"
-        :text-visable="false"
+        :text-visible="false"
         class="comment-card__stars"
       />
     </div>
@@ -49,6 +49,7 @@ const { notation, name, comment } = defineProps({
   background-color: var(--color-white);
   width: 263px;
   border-radius: var(--space-4);
+  flex-grow: 1;
 
   &__profile-picture {
     border-radius: var(--space-8);
