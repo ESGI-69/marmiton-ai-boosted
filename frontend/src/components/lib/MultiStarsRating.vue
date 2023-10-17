@@ -20,7 +20,7 @@
       />
     </svg>
     <span
-      v-if="modelValue"
+      v-if="modelValue && textVisable"
       class="multi-stars-rating__rating"
     >{{ modelValue }}/{{ max }}</span>
   </div>
@@ -40,6 +40,10 @@ defineProps({
   clickable: {
     type: Boolean,
     default: false,
+  },
+  textVisable: {
+    type: Boolean,
+    default: true,
   },
 });
 </script>

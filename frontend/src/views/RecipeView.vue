@@ -41,6 +41,28 @@
         Commenter
       </Button>
     </section>
+    <section class="recipe__comments">
+      <h2 class="subtitle">
+        Avis
+      </h2>
+      <div
+        class="recipe__comments-container"
+      >
+        <CommentCard
+          v-for="rating in recipe.ratings"
+          :key="rating.id"
+          :notation="rating.notation"
+          :name="rating.author.name"
+          :comment="rating.comment"
+        />
+      </div>
+      <p
+        v-if="recipe.ratings.length === 0"
+        class="recipe__no-comment"
+      >
+        Aucun avis pour cette recette
+      </p>
+    </section>
   </main>
 </template>
 
@@ -53,6 +75,7 @@ import Loader from '@/components/lib/Loader.vue';
 import MultiStarsRating from '@/components/lib/MultiStarsRating.vue';
 import Recipe from '@/components/Recipe.vue';
 import Textarea from '@/components/lib/Textarea.vue';
+import CommentCard from '@/components/CommentCard.vue';
 
 const route = useRoute();
 const recipeStore = useRecipeStore();
@@ -108,6 +131,17 @@ const postComment = async () => {
       grid-area: button;
       justify-self: right;
     }
+  }
+
+  &__comments-container {
+    display: flex;
+    flex-direction: row;
+    gap: var(--space-4);
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  &__no-comment {
+    color: var(--color-text-secondary);
   }
 }
 </style>
