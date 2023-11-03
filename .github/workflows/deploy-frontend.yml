@@ -15,6 +15,8 @@ jobs:
   publish_frontend:
     runs-on: ubuntu-latest
     name: Publish frontend image
+    environment:
+      name: production
     steps:
       - uses: actions/checkout@v3
       - name: Set up Docker Buildx
@@ -24,6 +26,11 @@ jobs:
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Copy .env file
+        run: cp frontend/.env.example frontend/.env.production
+      - name: Adapat .env.production file to production URL
+        # Replace VITE_API line with the production URL
+        run: sed -i "s#VITE_API=.*#VITE_API=${{ vars.URL }}api#g" frontend/.env.production
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
