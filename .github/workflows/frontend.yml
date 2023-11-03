@@ -42,3 +42,16 @@ jobs:
         run: npm install
       - name: Build
         run: npm run build
+
+  docker_build:
+    needs:
+      - build
+    runs-on: ubuntu-latest
+    name: Build image (frontend)
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        run: docker build .

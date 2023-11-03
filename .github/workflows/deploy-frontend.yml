@@ -1,0 +1,53 @@
+name: Deploy frontend to VPS
+run-name: ${{ github.actor }} deployed frontend to VPS (${{ github.sha }})
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/deploy-frontend.yml'
+
+env:
+  DOCKERHUB_REPO_FRONTEND: ${{ vars.DOCKERHUB_USERNAME }}/marmiton-frontend
+
+jobs:
+  publish_frontend:
+    runs-on: ubuntu-latest
+    name: Publish frontend image
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: "./frontend"
+          push: true
+          tags: ${{ env.DOCKERHUB_REPO_FRONTEND }}:latest, ${{ env.DOCKERHUB_REPO_FRONTEND }}:${{ github.sha }}
+
+  deploy_frontend:
+    runs-on: ubuntu-latest
+    name: Deploy frontend
+    needs:
+      - publish_frontend
+    environment:
+      name: production
+      url: ${{ vars.URL }}
+    concurrency: deploy
+    steps:
+      - uses: actions/checkout@v3
+      - name: Redeploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+          script: |
+            kubectl set image deployment/frontend-deployment front=${{ env.DOCKERHUB_REPO_FRONTEND }}:${{ github.sha }} -n marmiton
+            kubectl rollout status deployment/frontend-deployment -n marmiton
