@@ -26,11 +26,9 @@ jobs:
         with:
           username: ${{ vars.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Copy .env file
-        run: cp frontend/.env.example frontend/.env.production
-      - name: Adapat .env.production file to production URL
+      - name: Create .env.production file to with correct API URL
         # Replace VITE_API line with the production URL
-        run: sed -i "s#VITE_API=.*#VITE_API=${{ vars.URL }}api#g" frontend/.env.production
+        run: sed "s#VITE_API=.*#VITE_API=${{ vars.URL }}api#g" frontend/.env.example > frontend/.env.production
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
