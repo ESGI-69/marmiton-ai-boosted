@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: marmiton
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend
+        image: gatien1/marmiton-backend:3204d83fc1b7d0cca2773715f0087f244a1e0913
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            memory: 500Mi
+            cpu: "0.25"
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: database-info
+              key: URL
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: api-keys
+              key: JWT_SECRET
+        - name: OPENAI_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: api-keys
+              key: OPENAI_API_KEY
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: marmiton
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 3100
+      targetPort: 3000
