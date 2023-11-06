@@ -6,8 +6,10 @@ import userRouter from './routes/user';
 import authRouter from './routes/auth';
 import recipeRouter from './routes/recipe';
 import { populateUser } from './middlewares';
+import morgan from 'morgan';
 
 const app = express();
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(populateUser);
 
