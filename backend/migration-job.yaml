@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: prisma-migration-job
+  namespace: marmiton
+spec:
+  template:
+    spec:
+      containers:
+        - name: prisma-migration-container
+          image: gatien1/marmiton-backend:latest
+          command:
+            - npx
+            - prisma
+            - migrate
+            - deploy
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: database-info
+                  key: URL
+      restartPolicy: Never

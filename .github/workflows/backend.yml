@@ -2,12 +2,11 @@ name: Backend tests
 run-name: ${{ github.actor }} launching backend tests
 
 on:
-  push:
-    branches: [ main ]
-    paths: [ 'backend/**', '.github/**' ]
   pull_request:
     branches: [ main ]
-    paths: [ 'backend/**', '.github/**' ]
+    paths:
+      - 'backend/**'
+      - '.github/workflows/deploy-backend.yml'
     
 jobs:
   eslint:
