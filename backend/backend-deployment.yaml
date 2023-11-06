@@ -38,6 +38,8 @@ spec:
             secretKeyRef:
               name: api-keys
               key: OPENAI_API_KEY
+        - name: BASE_PATH
+          value: /api
 
 ---
 

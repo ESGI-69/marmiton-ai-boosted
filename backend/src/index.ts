@@ -1,22 +1,15 @@
 import express from 'express';
-
-import errorHandler from './errorHandler';
-
-import userRouter from './routes/user';
-import authRouter from './routes/auth';
-import recipeRouter from './routes/recipe';
-import { populateUser } from './middlewares';
 import morgan from 'morgan';
+
+import routes from './routes';
+import errorHandler from './errorHandler';
+import { populateUser } from './middlewares';
 
 const app = express();
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(populateUser);
-
-app.use('/users', userRouter);
-app.use('/auth', authRouter);
-app.use('/recipes', recipeRouter);
-
+app.use(process.env.BASE_PATH || '/', routes);
 app.use(errorHandler);
 
 app.listen(3000, () => {
