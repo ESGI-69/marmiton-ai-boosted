@@ -10,7 +10,7 @@
       class="modal__close"
       @click="$emit('update:modelValue', false)"
     />
-    <slot />
+    <slot @test="test" />
   </VueFinalModal>
 </template>
 
