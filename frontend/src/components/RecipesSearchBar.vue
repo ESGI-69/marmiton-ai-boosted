@@ -39,6 +39,7 @@ const inputValue = ref('');
 
 const handleDebounce = (searchValue) => {
   isDebouncing.value = false;
+  if (!searchValue) return;
   emit('search', searchValue);
 };
 </script>

@@ -5,8 +5,15 @@ import api from '@/plugins/axios';
 
 export const useAuthStore = defineStore('authStore', {
   state: () => ({
-    isLogged: false,
+    isLoginLoading: false,
+
+    isProfileLoading: false,
+    profile: {},
   }),
+
+  getters: {
+    isLogged: (state) => state.profile.id !== undefined,
+  },
 
   actions: {
     async login({ username, password }) {
@@ -14,7 +21,6 @@ export const useAuthStore = defineStore('authStore', {
       this.isLoginLoading = true;
       try {
         const { data: { token } } = await api.post('auth/login/', { username, password });
-        this.isLogged = true;
         Cookies.set(
           import.meta.env.VITE_COOKIE_TOKEN_NAME,
           token,
@@ -23,20 +29,37 @@ export const useAuthStore = defineStore('authStore', {
             secure: true,
           },
         );
+        await this.getProfile();
         this.isLoginLoading = false;
         return;
       } catch (error) {
-        this.isLogged = false;
         this.isLoginLoading = false;
         throw error;
+      }
+    },
+
+    async getProfile() {
+      try {
+        this.isProfileLoading = true;
+        const { data } = await api.get('users/me');
+        this.profile = data;
+      } catch (error) {
+        this.profile = {};
+      } finally {
+        this.isProfileLoading = false;
       }
     },
 
     init() {
       const token = Cookies.get(import.meta.env.VITE_COOKIE_TOKEN_NAME);
       if (token) {
-        this.isLogged = true;
+        this.getProfile();
       }
+    },
+
+    logout() {
+      Cookies.remove(import.meta.env.VITE_COOKIE_TOKEN_NAME);
+      this.profile = {};
     },
   },
 });

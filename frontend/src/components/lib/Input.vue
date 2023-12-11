@@ -1,5 +1,6 @@
 <template>
   <input
+    :id="id"
     class="input"
     :placeholder="placeholder"
     :value="modelValue"
@@ -9,6 +10,10 @@
 
 <script setup>
 const props = defineProps({
+  id: {
+    type: String,
+    default: '',
+  },
   modelValue: {
     type: String,
     default: '',

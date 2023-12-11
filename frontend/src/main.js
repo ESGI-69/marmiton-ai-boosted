@@ -2,16 +2,23 @@ import './assets/main.scss';
 
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import { createVfm } from 'vue-final-modal';
 
-import { useAuthStore } from './stores/authStore';
+import addInterceptors from '@/plugins/interceptor';
+import api from '@/plugins/axios';
 
-import App from './App.vue';
-import router from './router';
+addInterceptors(api);
+
+import { useAuthStore } from '@/stores/authStore';
+
+import App from '@/App.vue';
+import router from '@/router';
 
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
+app.use(createVfm());
 
 useAuthStore().init();
 
