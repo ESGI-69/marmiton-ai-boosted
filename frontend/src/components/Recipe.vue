@@ -5,9 +5,11 @@
         class="recipe__header__notation"
         :rating="notation"
       />
-      <div class="recipe__header__fav">
-        coeur
-      </div>
+      <Heart
+        class="recipe__header__fav"
+        :is-active="true"
+        @click="favoriteRecipe"
+      />
     </div>
     <div class="recipe__info">
       <h1 class="recipe__info__title">
@@ -60,9 +62,42 @@
 </template>
 
 <script setup>
-import StarRating from './lib/StarRating.vue';
+import StarRating from '@/components/lib/StarRating.vue';
+import Heart from '@/components/Heart.vue';
+import { useAuthStore } from '@/stores/authStore';
+import { useRecipeStore } from '@/stores/recipeStore';
+import { useModal } from 'vue-final-modal';
+import Modal from '@/components/lib/Modal.vue';
+import Login from '@/components/Modals/Login.vue';
 
-defineProps({
+const authStore = useAuthStore();
+const recipieStore = useRecipeStore();
+
+const loginModal = useModal({
+  component: Modal,
+  attrs: {
+    title: 'Welcome back!',
+    onClose: () => loginModal.close(),
+  },
+  slots: {
+    default: {
+      component: Login,
+      attrs: {
+        onClose: () => loginModal.close(),
+      },
+    },
+  },
+});
+
+const favoriteRecipe = () => {
+  if (!authStore.isLogged) {
+    loginModal.open();
+    return;
+  }
+  recipieStore.favoriteRecipe(porps.id);
+};
+
+const porps = defineProps({
   imageUrl: {
     type: String,
     default: 'http://placekitten.com/300/300',
@@ -85,6 +120,10 @@ defineProps({
   },
   steps: {
     type: Array,
+    required: true,
+  },
+  id: {
+    type: Number,
     required: true,
   },
 });

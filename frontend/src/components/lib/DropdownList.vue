@@ -16,28 +16,29 @@ const active = inject('active');
 
 <style lang="scss" scoped>
 .dropdown__list--active {
-    transform-origin: top right;
-    position: absolute;
-    right: 0;
-    margin-top: var(--space-1);
-    background: var(--color-white);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: var(--space-1) 0;
-    width: -moz-available;
-    width: max-content;
+  z-index: 10;
+  transform-origin: top right;
+  position: absolute;
+  right: 0;
+  margin-top: var(--space-1);
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: var(--space-1) 0;
+  width: -moz-available;
+  width: max-content;
 }
 
 
 .dropdown-content-enter-active,
 .dropdown-content-leave-active {
-    transition: all 0.2s;
+  transition: all 0.2s;
 }
 
 .dropdown-content-enter,
 .dropdown-content-leave-to {
-    opacity: 0;
-    transform: translateY(-5px);
+  opacity: 0;
+  transform: translateY(-5px);
 }
 </style>
 

@@ -11,7 +11,14 @@ export default {
       checkParams(['id'], req.params);
       const id = parseInt(req.params.id);
       const recipe = await recipeSerice.getById(id);
-      res.status(200).json(recipe);
+      let isFavorite = false;
+      if (req.user && recipe) {
+        isFavorite = recipe.favoriteByUsers.some((favorite) => favorite.userId === req.user?.id);
+      }
+      const favoriteCount = recipe?.favoriteByUsers.length || 0;
+      const returnRecipe = { ...recipe, isFavorite, favoriteCount };
+      delete returnRecipe.favoriteByUsers;
+      res.status(200).json(returnRecipe);
     } catch (error) {
       next(error);
     }
@@ -43,6 +50,30 @@ export default {
       }
       const recipe = await recipeSerice.create(openAiRecipie);
       res.status(200).send(recipe);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  favorite: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!req.user) throw new Error('You must be logged in to favorite a recipe');
+      checkParams(['id'], req.params);
+      const id = parseInt(req.params.id);
+      await recipeSerice.favorite(id, req.user.id);
+      res.status(200).send({});
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  unfavorite: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!req.user) throw new Error('You must be logged in to unfavorite a recipe');
+      checkParams(['id'], req.params);
+      const id = parseInt(req.params.id);
+      await recipeSerice.unfavorite(id, req.user.id);
+      res.status(200).send({});
     } catch (error) {
       next(error);
     }

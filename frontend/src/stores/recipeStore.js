@@ -60,5 +60,13 @@ export const useRecipeStore = defineStore('recipeStore', {
         this.isReviewRecipeLoading = false;
       }
     },
+
+    async favoriteRecipe(id) {
+      try {
+        await api.post(`recipes/${id}/favorite`);
+      } catch (error) {
+        throw error.response.data;
+      }
+    },
   },
 });

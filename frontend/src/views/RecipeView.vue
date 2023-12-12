@@ -8,6 +8,7 @@
   >
     <section>
       <Recipe
+        :id="recipe.id"
         :title="recipe.title"
         :steps="recipe.steps"
         :description="recipe.description"

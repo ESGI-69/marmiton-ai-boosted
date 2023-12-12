@@ -10,5 +10,7 @@ router.get('/search', recipeController.search);
 router.post('/search-ai', recipeController.searchAi);
 router.get('/:id', recipeController.get);
 router.post('/:id/ratings', isLogged, ratingController.addRating);
+router.post('/:id/favorite', isLogged, recipeController.favorite);
+router.post('/:id/unfavorite', isLogged, recipeController.unfavorite);
 
 export default router;
