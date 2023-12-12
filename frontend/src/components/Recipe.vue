@@ -5,11 +5,15 @@
         class="recipe__header__notation"
         :rating="notation"
       />
-      <Heart
-        class="recipe__header__fav"
-        :is-active="true"
-        @click="favoriteRecipe"
-      />
+      <div class="recipe__header__fav">
+        <span class="recipe__header__fav__count">
+          {{ favoriteCount }}
+        </span>
+        <Heart
+          :is-active="isFavorite"
+          @click="favoriteClickHandle"
+        />
+      </div>
     </div>
     <div class="recipe__info">
       <h1 class="recipe__info__title">
@@ -89,15 +93,23 @@ const loginModal = useModal({
   },
 });
 
+const favoriteClickHandle = () => {
+  if (props.isFavorite) {
+    recipieStore.unfavoriteRecipe(props.id);
+  } else {
+    favoriteRecipe();
+  }
+};
+
 const favoriteRecipe = () => {
   if (!authStore.isLogged) {
     loginModal.open();
     return;
   }
-  recipieStore.favoriteRecipe(porps.id);
+  recipieStore.favoriteRecipe(props.id);
 };
 
-const porps = defineProps({
+const props = defineProps({
   imageUrl: {
     type: String,
     default: 'http://placekitten.com/300/300',
@@ -120,6 +132,14 @@ const porps = defineProps({
   },
   steps: {
     type: Array,
+    required: true,
+  },
+  isFavorite: {
+    type: Boolean,
+    default: false,
+  },
+  favoriteCount: {
+    type: Number,
     required: true,
   },
   id: {
@@ -145,6 +165,13 @@ const porps = defineProps({
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    &__fav {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      color: var(--color-text-secondary);
+    }
   }
 
   &__info {
@@ -193,6 +220,7 @@ const porps = defineProps({
     &__ingredient {
       &__quantity {
         font-weight: 500;
+        width: 150px;
       }
       &__name:first-letter {
         text-transform: uppercase;
