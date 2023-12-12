@@ -12,7 +12,6 @@
           <Chatbubble
             side="left"
             text="Bonjour, je suis un chatbot cuisinier comment puis-je vous aider ?"
-            variant="dark"
             sender="Philippe Etchebot"
           />
           <Chatbubble
@@ -34,6 +33,12 @@
             <IconSend class="chatbot__window__chat__input__send" />
           </Button>
         </div>
+        <p
+          v-if="isError"
+          class="chatbot__error"
+        >
+          {{ errorMsg }}
+        </p>
       </div>
     </Transition>
 
@@ -66,6 +71,8 @@ const isOpen = ref(false);
 const chatContainer = ref(null);
 const prompts = ref([]);
 const userPrompt = ref(null);
+const isError = ref(false);
+const errorMsg = ref('');
 
 const scroolChatToBottom = () => {
   if (isOpen.value && chatContainer.value) {
@@ -82,6 +89,12 @@ onUpdated(() => {
 });
 
 const sendPrompt = () => {
+  if (!userPrompt.value) {
+    isError.value = true;
+    errorMsg.value = 'Veuillez saisir un message';
+    return;
+  }
+  isError.value = false;
   prompts.value.push({ role: 'user', content: userPrompt.value, id: Math.random() });
   userPrompt.value = null;
   nextTick(() => {
@@ -116,11 +129,7 @@ const sendPrompt = () => {
     align-items: center;
 
     &:hover {
-      background-color: var(--color-primary-light);
-    }
-
-    &--visible:hover {
-      background-color: red;
+      background-color: var(--color-text);
     }
 
     &__openai,
@@ -159,6 +168,7 @@ const sendPrompt = () => {
         display: flex;
         flex-direction: row;
         gap: 0.5rem;
+        margin-bottom: 0.5rem;
 
         &__textarea {
           resize: none;
@@ -167,12 +177,20 @@ const sendPrompt = () => {
         }
 
         &__send {
-          color: var(--color-white);
           width: 1.5rem;
           height: 1.5rem;
         }
       }
     }
+  }
+
+  &__error {
+    color: var(--color-error);
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    position: absolute;
+    bottom: 0;
+    bottom: 0.25rem;
   }
 
   .fade-enter-from,
