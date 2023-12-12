@@ -5,7 +5,36 @@
         v-if="isOpen"
         class="chatbot__window"
       >
-        <h1>Chatbot</h1>
+        <div
+          ref="chatContainer"
+          class="chatbot__window__chat"
+        >
+          <div class="chatbot__window__chat__bubble_ia">
+            Je suis un chatbot cuisinier, comment puis-je vous aider ?
+          </div>
+          <div class="chatbot__window__chat__bubble_user">
+            Je suis un chatbot cuisinier, comment puis-je vous aiddsqdsqer ?
+          </div>
+          <div class="chatbot__window__chat__bubble_user">
+            Je suis un chatbot cuisinier, comment puis-je vous aiddsqdsqer ?
+          </div>
+          <div class="chatbot__window__chat__bubble_user">
+            Je suis un chatbot cuisinier, comment puis-je vous aiddsqdsqer ?
+          </div>
+          <div class="chatbot__window__chat__bubble_user">
+            Je suis un chatbot cuisinier, comment puis-je vous aiddsqdsqer ?
+          </div>
+          <div class="chatbot__window__chat__bubble_user">
+            Je suis un chatbot cuisinier, comment puis-je vous aiddsqdsqer ?
+          </div>
+        </div>
+        <div class="chatbot__window__chat__input">
+          <textarea
+            class="chatbot__window__chat__input__textarea"
+            placeholder="Votre message"
+          />
+          <Button>Envoyer</Button>
+        </div>
       </div>
     </Transition>
 
@@ -27,15 +56,23 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onUpdated } from 'vue';
 import IconOpenai from './icons/IconOpenai.vue';
 import IconCloseCross from './icons/IconCloseCross.vue';
+import Button from './lib/Button.vue';
 
 const isOpen = ref(false);
+const chatContainer = ref(null);
 
 function toggleChatbot() {
   isOpen.value = !isOpen.value;
 }
+
+onUpdated(() => {
+  if (isOpen.value && chatContainer.value) {
+    chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
+  }
+});
 </script>
 
 <style scoped lang="scss">
@@ -94,6 +131,20 @@ function toggleChatbot() {
     overflow: auto;
     padding: 20px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+
+    &__chat {
+      display: flex;
+      flex-direction: column;
+      overflow-y: scroll;
+      gap: 1rem;
+        &__input {
+        display: flex;
+        flex-direction: row;
+      }
+    }
   }
 
   .fade-enter-from,
