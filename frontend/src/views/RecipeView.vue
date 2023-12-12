@@ -8,10 +8,13 @@
   >
     <section>
       <Recipe
+        :id="recipe.id"
         :title="recipe.title"
         :steps="recipe.steps"
         :description="recipe.description"
         :ingredients="recipe.ingredientsWithQuantity.map(ingredient => ({ name: ingredient.ingredient.name, quantity: ingredient.quantity }))"
+        :is-favorite="recipe.isFavorite"
+        :favorite-count="recipe.favoriteCount"
       />
     </section>
     <section class="recipe__comment">

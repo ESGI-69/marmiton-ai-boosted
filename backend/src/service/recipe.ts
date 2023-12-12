@@ -55,6 +55,11 @@ export default {
         id,
       },
       include: {
+        favoriteByUsers: {
+          select: {
+            userId: true,
+          },
+        },
         ingredientsWithQuantity: {
           include: {
             ingredient: true,
@@ -93,5 +98,37 @@ export default {
     const prismaQuery = prismaSearchQueryBuilder(query);
     const recipes = await prisma.recipe.findMany(prismaQuery);
     return recipes;
+  },
+
+  favorite: async function (id: number, userId: number) {
+    await prisma.recipe.update({
+      where: {
+        id,
+      },
+      data: {
+        favoriteByUsers: {
+          create: {
+            userId,
+          },
+        },
+      },
+    });
+    return this.getById(id);
+  },
+
+  unfavorite: async function (id: number, userId: number) {
+    await prisma.recipe.update({
+      where: {
+        id,
+      },
+      data: {
+        favoriteByUsers: {
+          deleteMany: {
+            userId,
+          },
+        },
+      },
+    });
+    return this.getById(id);
   },
 };

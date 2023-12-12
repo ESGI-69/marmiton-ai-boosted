@@ -6,7 +6,13 @@
         :rating="notation"
       />
       <div class="recipe__header__fav">
-        coeur
+        <span class="recipe__header__fav__count">
+          {{ favoriteCount }}
+        </span>
+        <Heart
+          :is-active="isFavorite"
+          @click="favoriteClickHandle"
+        />
       </div>
     </div>
     <div class="recipe__info">
@@ -60,9 +66,50 @@
 </template>
 
 <script setup>
-import StarRating from './lib/StarRating.vue';
+import StarRating from '@/components/lib/StarRating.vue';
+import Heart from '@/components/Heart.vue';
+import { useAuthStore } from '@/stores/authStore';
+import { useRecipeStore } from '@/stores/recipeStore';
+import { useModal } from 'vue-final-modal';
+import Modal from '@/components/lib/Modal.vue';
+import Login from '@/components/Modals/Login.vue';
 
-defineProps({
+const authStore = useAuthStore();
+const recipieStore = useRecipeStore();
+
+const loginModal = useModal({
+  component: Modal,
+  attrs: {
+    title: 'Welcome back!',
+    onClose: () => loginModal.close(),
+  },
+  slots: {
+    default: {
+      component: Login,
+      attrs: {
+        onClose: () => loginModal.close(),
+      },
+    },
+  },
+});
+
+const favoriteClickHandle = () => {
+  if (props.isFavorite) {
+    recipieStore.unfavoriteRecipe(props.id);
+  } else {
+    favoriteRecipe();
+  }
+};
+
+const favoriteRecipe = () => {
+  if (!authStore.isLogged) {
+    loginModal.open();
+    return;
+  }
+  recipieStore.favoriteRecipe(props.id);
+};
+
+const props = defineProps({
   imageUrl: {
     type: String,
     default: 'http://placekitten.com/300/300',
@@ -87,6 +134,18 @@ defineProps({
     type: Array,
     required: true,
   },
+  isFavorite: {
+    type: Boolean,
+    default: false,
+  },
+  favoriteCount: {
+    type: Number,
+    required: true,
+  },
+  id: {
+    type: Number,
+    required: true,
+  },
 });
 </script>
 
@@ -106,6 +165,13 @@ defineProps({
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    &__fav {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      color: var(--color-text-secondary);
+    }
   }
 
   &__info {
@@ -154,6 +220,7 @@ defineProps({
     &__ingredient {
       &__quantity {
         font-weight: 500;
+        width: 150px;
       }
       &__name:first-letter {
         text-transform: uppercase;

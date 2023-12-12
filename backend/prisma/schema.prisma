@@ -11,11 +11,22 @@ datasource db {
 }
 
 model User {
+  id              Int                  @id @default(autoincrement())
+  username        String               @unique
+  password        String
+  name            String?
+  ratings         Rating[]
+  favoriteRecipes FavoriteUserRecipe[]
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+}
+
+model FavoriteUserRecipe {
   id        Int      @id @default(autoincrement())
-  username  String   @unique
-  password  String
-  name      String?
-  ratings   Rating[]
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  recipe    Recipe   @relation(fields: [recipeId], references: [id])
+  recipeId  Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -45,6 +56,7 @@ model Recipe {
   steps                      String[]
   ingredientsWithQuantity    IngredientsWithQuantity[]
   ingredientsWithQuantityIds Int[]
+  favoriteByUsers            FavoriteUserRecipe[]
   ratings                    Rating[]
   createdAt                  DateTime                  @default(now())
   updatedAt                  DateTime                  @updatedAt

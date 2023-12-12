@@ -8,12 +8,14 @@
   --color-border: #E7E7E7;
 
   --color-text: #1D1D1D;
-  --color-text-secondary: #6666;
+  --color-text-secondary: #666;
 
   --color-primary: #242424;
   --color-primary-light: #525252;
 
   --color-white: #FFFFFF;
+
+  --color-danger: #FF0000;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
