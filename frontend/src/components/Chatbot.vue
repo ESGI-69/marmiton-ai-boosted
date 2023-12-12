@@ -9,31 +9,30 @@
           ref="chatContainer"
           class="chatbot__window__chat"
         >
-          <div class="chatbot__window__chat__bubble_ia">
-            Je suis un chatbot cuisinier, comment puis-je vous aider ?
-          </div>
-          <div class="chatbot__window__chat__bubble_user">
-            Je suis un chatbot cuisinier, comment puis-je vous aiddsqdsqer ?
-          </div>
-          <div class="chatbot__window__chat__bubble_user">
-            Je suis un chatbot cuisinier, comment puis-je vous aiddsqdsqer ?
-          </div>
-          <div class="chatbot__window__chat__bubble_user">
-            Je suis un chatbot cuisinier, comment puis-je vous aiddsqdsqer ?
-          </div>
-          <div class="chatbot__window__chat__bubble_user">
-            Je suis un chatbot cuisinier, comment puis-je vous aiddsqdsqer ?
-          </div>
-          <div class="chatbot__window__chat__bubble_user">
-            Je suis un chatbot cuisinier, comment puis-je vous aiddsqdsqer ?
-          </div>
+          <Chatbubble
+            side="left"
+            text="Bonjour, je suis un chatbot cuisinier comment puis-je vous aider ?"
+            variant="dark"
+            sender="Philippe Etchebot"
+          />
+          <Chatbubble
+            v-for="prompt in prompts"
+            :key="prompt.id"
+            :side="prompt.role === 'user' ? 'right' : 'left'"
+            :text="prompt.content"
+            :sender="prompt.role === 'user' ? 'Vous' : 'Philippe Etchebot'"
+          />
         </div>
         <div class="chatbot__window__chat__input">
           <textarea
+            v-model="userPrompt"
             class="chatbot__window__chat__input__textarea"
             placeholder="Votre message"
+            @keydown.enter.prevent="sendPrompt"
           />
-          <Button>Envoyer</Button>
+          <Button @click="sendPrompt">
+            <IconSend class="chatbot__window__chat__input__send" />
+          </Button>
         </div>
       </div>
     </Transition>
@@ -56,23 +55,39 @@
 </template>
 
 <script setup>
-import { ref, onUpdated } from 'vue';
+import { ref, onUpdated, nextTick } from 'vue';
 import IconOpenai from './icons/IconOpenai.vue';
 import IconCloseCross from './icons/IconCloseCross.vue';
+import IconSend from './icons/IconSend.vue';
 import Button from './lib/Button.vue';
+import Chatbubble from './lib/Chatbubble.vue';
 
 const isOpen = ref(false);
 const chatContainer = ref(null);
+const prompts = ref([]);
+const userPrompt = ref(null);
 
-function toggleChatbot() {
-  isOpen.value = !isOpen.value;
-}
-
-onUpdated(() => {
+const scroolChatToBottom = () => {
   if (isOpen.value && chatContainer.value) {
     chatContainer.value.scrollTop = chatContainer.value.scrollHeight;
   }
+};
+
+const toggleChatbot = () => {
+  isOpen.value = !isOpen.value;
+};
+
+onUpdated(() => {
+  scroolChatToBottom();
 });
+
+const sendPrompt = () => {
+  prompts.value.push({ role: 'user', content: userPrompt.value, id: Math.random() });
+  userPrompt.value = null;
+  nextTick(() => {
+    scroolChatToBottom();
+  });
+};
 </script>
 
 <style scoped lang="scss">
@@ -113,16 +128,16 @@ onUpdated(() => {
       color: var(--color-white);
       backface-visibility: hidden;
       transition: transform 0.6s;
+
       &--invisible {
-        transform: rotateY(180deg);
         display: none;
       }
     }
   }
 
   &__window {
-    width: 300px;
-    height: 400px;
+    width: 400px;
+    height: 550px;
     position: absolute;
     border: 1px solid var(--color-border);
     border-radius: 10px;
@@ -139,10 +154,23 @@ onUpdated(() => {
       display: flex;
       flex-direction: column;
       overflow-y: scroll;
-      gap: 1rem;
-        &__input {
+
+      &__input {
         display: flex;
         flex-direction: row;
+        gap: 0.5rem;
+
+        &__textarea {
+          resize: none;
+          width: 100%;
+          padding: 0.25rem;
+        }
+
+        &__send {
+          color: var(--color-white);
+          width: 1.5rem;
+          height: 1.5rem;
+        }
       }
     }
   }
