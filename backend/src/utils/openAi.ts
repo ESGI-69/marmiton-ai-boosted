@@ -36,6 +36,23 @@ class OpenAIQueryBuilder {
     });
     return response;
   }
+
+  public async generatePromptChatbot(prompts: Array<OpenAI.Chat.Completions.ChatCompletionMessageParam>, systemMessage: string, model: string): Promise<OpenAI.Chat.Completions.ChatCompletion> {
+    const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
+      {
+        role: 'system',
+        content: systemMessage,
+      },
+      ...prompts,
+    ];
+
+    const response = await this.client.chat.completions.create({
+      messages,
+      model,
+    });
+    return response;
+  }
+
 }
 
 export default OpenAIQueryBuilder;
