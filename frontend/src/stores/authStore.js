@@ -32,6 +32,7 @@ export const useAuthStore = defineStore('authStore', {
         await this.getProfile();
       } catch (error) {
         console.error(error);
+        throw error;
       } finally {
         this.isLoginLoading = false;
       }

@@ -8,14 +8,22 @@
       <Input
         id="username"
         v-model="username"
-        type="username"
+        type="text"
+        autocomplete="username"
       />
       <label for="password">Password</label>
       <Input
         id="password"
         v-model="password"
         type="password"
+        autocomplete="current-password"
       />
+      <span
+        v-if="error"
+        class="login-modal__form__error"
+      >
+        Wrong credentials
+      </span>
       <Button
         :is-loading="authStore.isLoginLoading"
         type="submit"
@@ -51,13 +59,20 @@ const emit = defineEmits([ 'close' ]);
 
 const authStore = useAuthStore();
 
+const error = ref(false);
+
 const username = ref('');
 const password = ref('');
 
 const login = async () => {
   if (authStore.isLoginLoading) return;
-  await authStore.login({ username: username.value, password: password.value });
-  emit('close');
+  error.value = false;
+  try {
+    await authStore.login({ username: username.value, password: password.value });
+    emit('close');
+  } catch (e) {
+    error.value = true;
+  }
 };
 
 const switchToRegister = () => {
@@ -102,7 +117,14 @@ const registerModal = useModal({
       margin-top: var(--space-1);
       margin-bottom: var(--space-4);
     }
+    &__error {
+      text-align: center;
+      color: var(--color-danger);
+      font-size: var(--text-sm);
+      margin-bottom: var(--space-4);
+    }
   }
+
 
   &__register-hint {
     text-align: center;
