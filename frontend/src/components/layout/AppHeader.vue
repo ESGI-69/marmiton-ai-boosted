@@ -54,13 +54,20 @@
           </DropdownListItem>
         </DropdownList>
       </Dropdown>
-      <a
-        v-else
-        class="header__nav__link"
-        @click="loginModal.open"
-      >
-        Connexion
-      </a>
+      <template v-else>
+        <a
+          class="header__nav__link"
+          @click="loginModal.open"
+        >
+          Login
+        </a>
+        <a
+          class="header__nav__link"
+          @click="registerModal.open"
+        >
+          Register
+        </a>
+      </template>
     </nav>
   </header>
 </template>
@@ -70,6 +77,7 @@ import Dropdown from '@/components/lib/Dropdown.vue';
 import DropdownList from '@/components/lib/DropdownList.vue';
 import DropdownListItem from '@/components/lib/DropdownListItem.vue';
 import Login from '@/components/Modals/Login.vue';
+import Register from '@/components/Modals/Register.vue';
 import { useAuthStore } from '@/stores/authStore';
 import { useModal } from 'vue-final-modal';
 import Modal from '@/components/lib/Modal.vue';
@@ -87,6 +95,22 @@ const loginModal = useModal({
       component: Login,
       attrs: {
         onClose: () => loginModal.close(),
+      },
+    },
+  },
+});
+
+const registerModal = useModal({
+  component: Modal,
+  attrs: {
+    title: 'Happy to see you here!',
+    onClose: () => registerModal.close(),
+  },
+  slots: {
+    default: {
+      component: Register,
+      attrs: {
+        onClose: () => registerModal.close(),
       },
     },
   },
