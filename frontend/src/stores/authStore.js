@@ -75,6 +75,7 @@ export const useAuthStore = defineStore('authStore', {
     logout() {
       Cookies.remove(import.meta.env.VITE_COOKIE_TOKEN_NAME);
       this.profile = {};
+      window.location = '/';
     },
   },
 });
