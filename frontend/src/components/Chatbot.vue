@@ -21,15 +21,26 @@
             :text="prompt.content"
             :sender="prompt.role === 'user' ? 'Vous' : 'Philippe Etchebot'"
           />
+          <Chatbubble
+            v-if="isChatbotLoading"
+            side="left"
+            text=" "
+            sender="Philippe Etchebot"
+            :is-loading="isChatbotLoading"
+          />
         </div>
         <div class="chatbot__window__chat__input">
           <textarea
             v-model="userPrompt"
             class="chatbot__window__chat__input__textarea"
-            placeholder="Votre message"
+            :placeholder="isChatbotLoading ? 'Envoi en cours...' : 'Votre message...'"
+            :disabled="isChatbotLoading"
             @keydown.enter.prevent="sendPrompt"
           />
-          <Button @click="sendPrompt">
+          <Button
+            :disabled="isChatbotLoading"
+            @click="sendPrompt"
+          >
             <IconSend class="chatbot__window__chat__input__send" />
           </Button>
         </div>
@@ -60,12 +71,15 @@
 </template>
 
 <script setup>
-import { ref, onUpdated, nextTick } from 'vue';
+import { ref, onUpdated, nextTick, computed } from 'vue';
 import IconOpenai from './icons/IconOpenai.vue';
 import IconCloseCross from './icons/IconCloseCross.vue';
 import IconSend from './icons/IconSend.vue';
 import Button from './lib/Button.vue';
 import Chatbubble from './lib/Chatbubble.vue';
+import { useChatbotStore } from '@/stores/chatbotStore';
+
+const chatbotStore = useChatbotStore();
 
 const isOpen = ref(false);
 const chatContainer = ref(null);
@@ -73,6 +87,9 @@ const prompts = ref([]);
 const userPrompt = ref(null);
 const isError = ref(false);
 const errorMsg = ref('');
+
+const isChatbotLoading = computed(() => chatbotStore.isChatbotLoading);
+const lastChatbotResponse = computed(() => chatbotStore.chatbotResponse);
 
 const scroolChatToBottom = () => {
   if (isOpen.value && chatContainer.value) {
@@ -88,18 +105,27 @@ onUpdated(() => {
   scroolChatToBottom();
 });
 
-const sendPrompt = () => {
+const sendPrompt = async () => {
   if (!userPrompt.value) {
     isError.value = true;
     errorMsg.value = 'Veuillez saisir un message';
     return;
   }
+
   isError.value = false;
-  prompts.value.push({ role: 'user', content: userPrompt.value, id: Math.random() });
+  prompts.value.push({ role: 'user', content: userPrompt.value });
   userPrompt.value = null;
   nextTick(() => {
     scroolChatToBottom();
   });
+
+  await chatbotStore.postChatbotMessage(prompts.value);
+
+  prompts.value.push(lastChatbotResponse.value);
+  nextTick(() => {
+    scroolChatToBottom();
+  });
+
 };
 </script>
 
