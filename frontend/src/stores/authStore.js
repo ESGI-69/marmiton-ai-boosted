@@ -6,6 +6,7 @@ import api from '@/plugins/axios';
 export const useAuthStore = defineStore('authStore', {
   state: () => ({
     isLoginLoading: false,
+    isRegisterLoading: false,
 
     isProfileLoading: false,
     profile: {},
@@ -17,7 +18,6 @@ export const useAuthStore = defineStore('authStore', {
 
   actions: {
     async login({ username, password }) {
-      this.ephemeralToken = '';
       this.isLoginLoading = true;
       try {
         const { data: { token } } = await api.post('auth/login/', { username, password });
@@ -30,11 +30,25 @@ export const useAuthStore = defineStore('authStore', {
           },
         );
         await this.getProfile();
-        this.isLoginLoading = false;
-        return;
       } catch (error) {
+        console.error(error);
+      } finally {
         this.isLoginLoading = false;
-        throw error;
+      }
+    },
+
+    async register({ username, name, password }) {
+      this.isRegisterLoading = true;
+      try {
+        await api.post('users/', {
+          username,
+          name,
+          password,
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        this.isRegisterLoading = false;
       }
     },
 

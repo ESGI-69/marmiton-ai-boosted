@@ -30,6 +30,7 @@
     </div>
     <Button
       type="light"
+      @click="switchToRegister"
     >
       Register
     </Button>
@@ -39,9 +40,12 @@
 <script setup>
 import { ref } from 'vue';
 import { useAuthStore } from '@/stores/authStore';
+import { useModal } from 'vue-final-modal';
 
-import Input from '@/components/lib/Input.vue';
 import Button from '@/components/lib/Button.vue';
+import Input from '@/components/lib/Input.vue';
+import Modal from '@/components/lib/Modal.vue';
+import Register from '@/components/Modals/Register.vue';
 
 const emit = defineEmits([ 'close' ]);
 
@@ -53,20 +57,40 @@ const password = ref('');
 const login = async () => {
   if (authStore.isLoginLoading) return;
   await authStore.login({ username: username.value, password: password.value });
-  emit('close', false);
+  emit('close');
 };
+
+const switchToRegister = () => {
+  registerModal.open();
+};
+
+const registerModal = useModal({
+  component: Modal,
+  attrs: {
+    title: 'Happy to see you here!',
+    onClose: () => registerModal.close(),
+  },
+  slots: {
+    default: {
+      component: Register,
+      attrs: {
+        onClose: () => registerModal.close(),
+      },
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
 .login-modal {
   display: flex;
   flex-direction: column;
-  width: 250px;
+  align-items: center;
 
   &__form {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 250px;
     padding: var(--space-4) 0;
 
     label {
