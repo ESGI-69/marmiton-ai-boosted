@@ -14,6 +14,7 @@ export const useRecipeStore = defineStore('recipeStore', {
 
   state: () => ({
     recipe: {},
+    isGenerateRecipeLoading: false,
     isRecipeLoading: false,
 
     searchResults: [],
@@ -33,6 +34,19 @@ export const useRecipeStore = defineStore('recipeStore', {
         throw error.response.data;
       } finally {
         this.isRecipeLoading = false;
+      }
+    },
+
+    async generateRecipe(prompt) {
+      this.isGenerateRecipeLoading = true;
+      try {
+        const { data } = await api.post('recipes/generate', { prompt });
+        this.recipe = data;
+        return;
+      } catch (error) {
+        throw error.response.data;
+      } finally {
+        this.isGenerateRecipeLoading = false;
       }
     },
 
