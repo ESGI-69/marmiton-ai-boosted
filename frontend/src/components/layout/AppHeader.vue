@@ -122,8 +122,8 @@ const registerModal = useModal({
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: var(--space-8);
-  margin-bottom: var(--space-4);
+  padding-top: var(--space-4);
+  padding-bottom: var(--space-4);
 
   &__logo {
     font-weight: 900;
