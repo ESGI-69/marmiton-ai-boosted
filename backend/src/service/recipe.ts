@@ -49,8 +49,8 @@ export default {
     return recipe;
   },
 
-  getById: function (id: number) {
-    return prisma.recipe.findUnique({
+  getById: async function (id: number, userId?: number) {
+    const recipe = await prisma.recipe.findUnique({
       where: {
         id,
       },
@@ -80,6 +80,15 @@ export default {
         },
       },
     });
+
+    let isFavorite = false;
+    if (userId && recipe) {
+      isFavorite = recipe.favoriteByUsers.some((favorite) => favorite.userId === userId);
+    }
+    const favoriteCount = recipe?.favoriteByUsers.length || 0;
+    const returnRecipe = { ...recipe, isFavorite, favoriteCount };
+    delete returnRecipe.favoriteByUsers;
+    return returnRecipe;
   },
 
   checkExist: async function (id: number) {
@@ -113,7 +122,7 @@ export default {
         },
       },
     });
-    return this.getById(id);
+    return this.getById(id, userId);
   },
 
   unfavorite: async function (id: number, userId: number) {
@@ -129,6 +138,6 @@ export default {
         },
       },
     });
-    return this.getById(id);
+    return this.getById(id, userId);
   },
 };

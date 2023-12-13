@@ -11,7 +11,12 @@ const router = createRouter({
     {
       path: '/about',
       name: 'about',
-      component: () => import('../views/AboutView.vue'),
+      component: () => import('@/views/AboutView.vue'),
+    },
+    {
+      path: '/generate',
+      name: 'generate-loading',
+      component: () => import('@/views/GenerateLoadingView.vue'),
     },
     {
       path: '/recipes',

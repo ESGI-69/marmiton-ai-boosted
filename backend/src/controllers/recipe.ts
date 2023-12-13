@@ -11,14 +11,7 @@ export default {
       checkParams(['id'], req.params);
       const id = parseInt(req.params.id);
       const recipe = await recipeSerice.getById(id);
-      let isFavorite = false;
-      if (req.user && recipe) {
-        isFavorite = recipe.favoriteByUsers.some((favorite) => favorite.userId === req.user?.id);
-      }
-      const favoriteCount = recipe?.favoriteByUsers.length || 0;
-      const returnRecipe = { ...recipe, isFavorite, favoriteCount };
-      delete returnRecipe.favoriteByUsers;
-      res.status(200).json(returnRecipe);
+      res.status(200).json(recipe);
     } catch (error) {
       next(error);
     }
@@ -48,7 +41,8 @@ export default {
         const recipe = await recipeSerice.getById(exisitingRecipie.id);
         return res.status(200).send(recipe);
       }
-      const recipe = await recipeSerice.create(openAiRecipie);
+      const generatedRecipe = await recipeSerice.create(openAiRecipie);
+      const recipe = await recipeSerice.getById(generatedRecipe.id);
       res.status(200).send(recipe);
     } catch (error) {
       next(error);

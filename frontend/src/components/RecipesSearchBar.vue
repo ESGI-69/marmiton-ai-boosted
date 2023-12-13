@@ -1,20 +1,20 @@
 <template>
   <Input
-    v-model="inputValue"
+    :model-value="modelValue"
     class="searchbar__input"
     placeholder="Rechercher une recette"
     :debounce-delay="500"
     @debounce="handleDebounce"
-    @input="isDebouncing = true"
+    @input="(value) => isDebouncing = true && ($emit('update:modelValue', value))"
   />
   <div
-    v-if="!isLoading && !isDebouncing && inputValue"
+    v-if="!isLoading && !isDebouncing && modelValue"
     class="searchbar__results"
   >
     <slot name="results" />
   </div>
   <div
-    v-else-if="inputValue"
+    v-else-if="modelValue"
     class="searchbar__loader"
   >
     <Loader />
@@ -30,12 +30,15 @@ import Loader from '@/components/lib/Loader.vue';
 
 const { isLoading } = defineProps({
   isLoading: Boolean,
+  modelValue: {
+    type: String,
+    default: '',
+  },
 });
 
-const emit = defineEmits([ 'search' ]);
+const emit = defineEmits([ 'search', 'update:modelValue' ]);
 
 const isDebouncing = ref(false);
-const inputValue = ref('');
 
 const handleDebounce = (searchValue) => {
   isDebouncing.value = false;

@@ -3,8 +3,9 @@
   <main class="container">
     <section class="searchbar">
       <SearchBar
+        v-model="searchValue"
         :is-loading="isSearchRecipeLoading"
-        @search="handleSearch"
+        @search="(value) => recipeStore.searchRecipes(value)"
       >
         <template #results>
           <div class="results">
@@ -60,22 +61,43 @@ import RecipeRow from '@/components/RecipeRow.vue';
 import SearchBar from '@/components/RecipesSearchBar.vue';
 import { useRecipeStore } from '@/stores/recipeStore';
 import { computed, ref } from 'vue';
+import { useModal } from 'vue-final-modal';
+import Modal from '@/components/lib/Modal.vue';
+import Login from '@/components/Modals/Login.vue';
+import { useAuthStore } from '@/stores/authStore';
 
 const router = useRouter();
 const recipeStore = useRecipeStore();
+const authStore = useAuthStore();
 const searchValue = ref('');
-
-const handleSearch = (value) => {
-  searchValue.value = value;
-  recipeStore.searchRecipes(value);
-};
 
 const handleRecipeClick = (id) => {
   router.push({ name: 'recipe', params: { id } });
 };
 
-const handleRecipeGenerationClick = () => {
-  console.log(searchValue.value);
+const loginModal = useModal({
+  component: Modal,
+  attrs: {
+    title: 'Welcome back!',
+    onClose: () => loginModal.close(),
+  },
+  slots: {
+    default: {
+      component: Login,
+      attrs: {
+        onClose: () => loginModal.close(),
+      },
+    },
+  },
+});
+
+const handleRecipeGenerationClick = async () => {
+  if (!authStore.isLogged) {
+    loginModal.open();
+    return;
+  }
+  recipeStore.generateRecipe(searchValue.value);
+  router.push({ name: 'generate-loading' });
 };
 
 const searchResults = computed(() => recipeStore.searchResults);
