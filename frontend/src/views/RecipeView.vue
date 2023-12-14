@@ -21,10 +21,17 @@
       <h2 class="recipe__recommendeds__title">
         Recette recommandée
       </h2>
-      <div class="recipe__recommendeds__recommended">
+      <span v-if="recipeStore.isSuggestRecipeLoading">
+        Je réfléchis...
+      </span>
+      <div
+        v-else
+        class="recipe__recommendeds__recommended"
+      >
         <RecipeCard
           v-for="suggestedRecipe in recipeStore.suggestedRecipies"
           :key="suggestedRecipe.title"
+          can-generate
           :title="suggestedRecipe.title"
           :description="suggestedRecipe.description"
         />
@@ -152,6 +159,10 @@ const postComment = async () => {
   }
 
   &__recommendeds {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+
     &__title {
       margin-bottom: var(--space-1);
       font-size: var(--text-xl);

@@ -1,5 +1,11 @@
 <template>
-  <div class="recipe-card">
+  <div
+    class="recipe-card"
+    :class="{
+      'recipe-card--can-generate': canGenerate,
+    }"
+    @click="handleClick"
+  >
     <img
       class="recipe-card__image"
       :src="imageUrl"
@@ -16,14 +22,16 @@
 </template>
 
 <script setup>
-// import { useAuthStore } from '@/stores/authStore';
-// import { useRecipeStore } from '@/stores/recipeStore';
+import { useAuthStore } from '@/stores/authStore';
+import { useRecipeStore } from '@/stores/recipeStore';
 import { useModal } from 'vue-final-modal';
 import Modal from '@/components/lib/Modal.vue';
 import Login from '@/components/Modals/Login.vue';
+import { useRouter } from 'vue-router';
 
-// const authStore = useAuthStore();
-// const recipieStore = useRecipeStore();
+const router = useRouter();
+const authStore = useAuthStore();
+const recipieStore = useRecipeStore();
 
 const loginModal = useModal({
   component: Modal,
@@ -41,7 +49,7 @@ const loginModal = useModal({
   },
 });
 
-defineProps({
+const props = defineProps({
   imageUrl: {
     type: String,
     default: 'https://placedog.net/144/144',
@@ -54,7 +62,22 @@ defineProps({
     type: String,
     required: true,
   },
+  canGenerate: {
+    type: Boolean,
+    default: false,
+  },
 });
+
+const handleClick = () => {
+  if (props.canGenerate) {
+    if (!authStore.isLogged) {
+      loginModal.open();
+      return;
+    }
+    recipieStore.generateRecipe(props.title);
+    router.push({ name: 'generate-loading' });
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -66,6 +89,14 @@ defineProps({
   overflow: hidden;
   box-shadow: var(--box-shadown);
   width: 100%;
+
+  &--can-generate {
+    cursor: pointer;
+
+    &:hover {
+      box-shadow: 0 0 0 1px var(--color-primary);
+    }
+  }
 
   &__image {
     width: 100%;
