@@ -70,4 +70,19 @@ export default {
       next(error);
     }
   },
+
+  suggestRecipies: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      checkParams(['id'], req.params);
+      const id = parseInt(req.params.id);
+      const recipe = await recipeSerice.getById(id);
+      if (!recipe.title) throw new Error('Recipe not found');
+      const openAiQueryBuilder = OpenAIQueryBuilder.getInstance();
+      const openAiResponse = await openAiQueryBuilder.suggestRecipies(recipe.title);
+      const openAiRecipies = openAiResponse.choices.map((choice) => JSON.parse(choice.message.content as string));
+      res.status(200).send(openAiRecipies[0].suggestions || openAiRecipies[0]);
+    } catch (error) {
+      next(error);
+    }
+  },
 };

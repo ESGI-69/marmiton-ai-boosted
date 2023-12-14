@@ -17,39 +17,52 @@
         :favorite-count="recipe.favoriteCount"
       />
     </section>
-    <section class="recipe__comment">
+    <section class="recipe__recommendeds">
+      <h2 class="recipe__recommendeds__title">
+        Recette recommandée
+      </h2>
+      <div class="recipe__recommendeds__recommended">
+        <RecipeCard
+          v-for="suggestedRecipe in recipeStore.suggestedRecipies"
+          :key="suggestedRecipe.title"
+          :title="suggestedRecipe.title"
+          :description="suggestedRecipe.description"
+        />
+      </div>
+    </section>
+    <section class="recipe__section">
       <h2 class="subtitle">
         Notez la recette
       </h2>
       <Textarea
         v-model="review.comment"
-        class="recipe__comment__textarea"
+        class="recipe__section__textarea"
         placeholder="Commentez à propos de cette recette..."
       />
       <MultiStarsRating
         v-model="review.notation"
-        class="recipe__comment__stars"
+        class="recipe__section__stars"
         clickable
       />
       <Loader
         v-if="recipeStore.isReviewRecipeLoading"
         size="small"
-        class="recipe__comment__loader"
+        class="recipe__section__loader"
       />
       <Button
-        class="recipe__comment__button"
+        class="recipe__section__button"
         :disabled="!review.notation || !review.comment"
         @click="postComment"
       >
         Commenter
       </Button>
     </section>
-    <section class="recipe__comments">
+    <section class="recipe__sections">
       <h2 class="subtitle">
         Avis
       </h2>
       <div
-        class="recipe__comments-container"
+        class="recipe__sections-container"
       >
         <CommentCard
           v-for="rating in recipe.ratings"
@@ -79,6 +92,7 @@ import MultiStarsRating from '@/components/lib/MultiStarsRating.vue';
 import Recipe from '@/components/Recipe.vue';
 import Textarea from '@/components/lib/Textarea.vue';
 import CommentCard from '@/components/CommentCard.vue';
+import RecipeCard from '@/components/RecipeCard.vue';
 
 const route = useRoute();
 const recipeStore = useRecipeStore();
@@ -92,6 +106,7 @@ const isRecipeLoading = computed(() => recipeStore.isRecipeLoading);
 const recipe = computed(() => recipeStore.recipe);
 
 recipeStore.getRecipe(route.params.id);
+recipeStore.getRecipeSuggestions(route.params.id);
 
 const postComment = async () => {
   await recipeStore.reviewRecipe(route.params.id, review);
@@ -111,7 +126,7 @@ const postComment = async () => {
   flex-direction: column;
   gap: var(--space-8);
 
-  &__comment {
+  &__section {
     display: grid;
     grid-template-rows: auto auto auto;
     grid-template-columns: 1fr auto 1fr;
@@ -136,7 +151,21 @@ const postComment = async () => {
     }
   }
 
-  &__comments-container {
+  &__recommendeds {
+    &__title {
+      margin-bottom: var(--space-1);
+      font-size: var(--text-xl);
+      font-weight: 600;
+    }
+
+    &__recommended {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+      gap: var(--space-4);
+    }
+  }
+
+  &__sections-container {
     display: flex;
     flex-direction: row;
     gap: var(--space-4);

@@ -17,6 +17,9 @@ export const useRecipeStore = defineStore('recipeStore', {
     isGenerateRecipeLoading: false,
     isRecipeLoading: false,
 
+    isSuggestRecipeLoading: false,
+    suggestedRecipies: [],
+
     searchResults: [],
     isSearchRecipeLoading: false,
 
@@ -92,6 +95,19 @@ export const useRecipeStore = defineStore('recipeStore', {
         this.recipe.favoriteCount -= 1;
       } catch (error) {
         throw error.response.data;
+      }
+    },
+
+    async getRecipeSuggestions(id) {
+      this.isSuggestRecipeLoading = true;
+      try {
+        const { data } = await api.get(`recipes/${id}/suggest/recipies`);
+        this.suggestedRecipies = data;
+        return data;
+      } catch (error) {
+        throw error.response.data;
+      } finally {
+        this.isSuggestRecipeLoading = false;
       }
     },
   },
