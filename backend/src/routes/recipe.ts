@@ -9,6 +9,7 @@ router.get('/', recipeController.search);
 router.get('/search', recipeController.search);
 router.post('/generate', recipeController.searchAi);
 router.get('/:id', recipeController.get);
+// router.get('/:id/suggest/recipies', recipeController.suggestRecipies);
 router.post('/:id/ratings', isLogged, ratingController.addRating);
 router.post('/:id/favorite', isLogged, recipeController.favorite);
 router.post('/:id/unfavorite', isLogged, recipeController.unfavorite);
