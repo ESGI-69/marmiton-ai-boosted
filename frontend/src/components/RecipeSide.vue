@@ -3,7 +3,7 @@
     <div class="sides__buttons">
       <Button
         type="light"
-        :class="{ 'active': activeButton === 'wine' }"
+        :active="activeButton === 'wine'"
         :disabled="isSuggestionsAreLoading"
         @click="changeTab('wine')"
       >
@@ -11,7 +11,7 @@
       </Button>
       <Button
         type="light"
-        :class="{ 'active': activeButton === 'dessert' }"
+        :active="activeButton === 'dessert'"
         :disabled="isSuggestionsAreLoading"
         @click="changeTab('dessert')"
       >
@@ -19,55 +19,52 @@
       </Button>
       <Button
         type="light"
-        :class="{ 'active': activeButton === 'cheese' }"
+        :active="activeButton === 'cheese'"
         :disabled="isSuggestionsAreLoading"
         @click="changeTab('cheese')"
       >
         🧀 Fromage
       </Button>
     </div>
-    <div class="sides_tabs">
+    <div class="sides__tabs">
       <div
         v-if="activeButton === 'wine'"
-        class="sides_tabs_wine"
+        class="sides__tabs__wine"
       >
         <LoadingCircle v-if="isWineSuggestionsLoading" />
-        <ul v-if="wineSuggestions.sides">
-          <li
+        <div class="sides__tabs__container">
+          <RecipeCard
             v-for="wine in wineSuggestions.sides"
-            :key="wine.id"
-          >
-            {{ wine }}
-          </li>
-        </ul>
+            :key="wine"
+            :title="wine"
+          />
+        </div>
       </div>
       <div
         v-else-if="activeButton === 'dessert'"
-        class="sides_tabs_dessert"
+        class="sides__tabs__dessert"
       >
         <LoadingCircle v-if="isDessertSuggestionsLoading" />
-        <ul v-if="dessertSuggestions.sides">
-          <li
+        <div class="sides__tabs__container">
+          <RecipeCard
             v-for="dessert in dessertSuggestions.sides"
-            :key="dessert.id"
-          >
-            {{ dessert }}
-          </li>
-        </ul>
+            :key="dessert"
+            :title="dessert"
+          />
+        </div>
       </div>
       <div
         v-else-if="activeButton === 'cheese'"
-        class="sides_tabs_cheese"
+        class="sides__tabs__cheese"
       >
         <LoadingCircle v-if="isCheeseSuggestionsLoading" />
-        <ul v-if="cheeseSuggestions.sides">
-          <li
+        <div class="sides__tabs__container">
+          <RecipeCard
             v-for="cheese in cheeseSuggestions.sides"
-            :key="cheese.id"
-          >
-            {{ cheese }}
-          </li>
-        </ul>
+            :key="cheese"
+            :title="cheese"
+          />
+        </div>
       </div>
       <p v-else>
         Sélectionnez un accompagnement à génerer
@@ -80,7 +77,8 @@
 import { defineProps, ref, computed } from 'vue';
 import { useRecipeStore } from '@/stores/recipeStore';
 import Button from './lib/Button.vue';
-import LoadingCircle from './LoadingCircle.vue';
+import LoadingCircle from '@/components/LoadingCircle.vue';
+import RecipeCard from '@/components/RecipeCard.vue';
 
 const recipeStore = useRecipeStore();
 
@@ -142,8 +140,13 @@ const props = defineProps({
     }
   }
 
-  &_tabs {
+  &__tabs {
     margin-top: var(--space-4);
+    &__container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+      gap: var(--space-4);
+    }
   }
 }
 </style>

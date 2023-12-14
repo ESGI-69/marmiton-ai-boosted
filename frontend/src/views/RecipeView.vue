@@ -111,6 +111,7 @@ import Recipe from '@/components/Recipe.vue';
 import Textarea from '@/components/lib/Textarea.vue';
 import CommentCard from '@/components/CommentCard.vue';
 import RecipeSide from '@/components/RecipeSide.vue';
+import RecipeCard from '@/components/RecipeCard.vue';
 
 const route = useRoute();
 const recipeStore = useRecipeStore();

@@ -14,7 +14,10 @@
       <h1 class="recipe-card__content__title">
         {{ title }}
       </h1>
-      <p class="recipe-card__content__description">
+      <p
+        v-if="description"
+        class="recipe-card__content__description"
+      >
         {{ description }}
       </p>
     </div>
@@ -60,7 +63,8 @@ const props = defineProps({
   },
   description: {
     type: String,
-    required: true,
+    required: false,
+    default: '',
   },
   canGenerate: {
     type: Boolean,
