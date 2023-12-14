@@ -24,6 +24,14 @@ export const useRecipeStore = defineStore('recipeStore', {
     isSearchRecipeLoading: false,
 
     isReviewRecipeLoading: false,
+
+    wineSuggestions: [],
+    dessertSuggestions: [],
+    cheeseSuggestions: [],
+
+    isWineSuggestionsLoading: false,
+    isDessertSuggestionsLoading: false,
+    isCheeseSuggestionsLoading: false,
   }),
 
   actions: {
@@ -108,6 +116,45 @@ export const useRecipeStore = defineStore('recipeStore', {
         throw error.response.data;
       } finally {
         this.isSuggestRecipeLoading = false;
+      }
+    },
+
+    async getWineSuggestions(id) {
+      this.isWineSuggestionsLoading = true;
+      try {
+        const { data } = await api.get(`recipes/${id}/suggest/wine`);
+        this.wineSuggestions = data;
+        return;
+      } catch (error) {
+        throw error.response.data;
+      } finally {
+        this.isWineSuggestionsLoading = false;
+      }
+    },
+
+    async getDessertSuggestions(id) {
+      this.isDessertSuggestionsLoading = true;
+      try {
+        const { data } = await api.get(`recipes/${id}/suggest/dessert`);
+        this.dessertSuggestions = data;
+        return;
+      } catch (error) {
+        throw error.response.data;
+      } finally {
+        this.isDessertSuggestionsLoading = false;
+      }
+    },
+
+    async getCheeseSuggestions(id) {
+      this.isCheeseSuggestionsLoading = true;
+      try {
+        const { data } = await api.get(`recipes/${id}/suggest/cheese`);
+        this.cheeseSuggestions = data;
+        return;
+      } catch (error) {
+        throw error.response.data;
+      } finally {
+        this.isCheeseSuggestionsLoading = false;
       }
     },
   },

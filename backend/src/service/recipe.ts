@@ -140,4 +140,12 @@ export default {
     });
     return this.getById(id, userId);
   },
+
+  getTitleById: async function (id: number): Promise<string> {
+    const recipe = await prisma.recipe.findUnique({ where: { id }, select: { title: true } });
+    if (!recipe || recipe.title === undefined) {
+      throw new Error(`Recipe with id ${id} not found`);
+    }
+    return recipe.title;
+  },
 };
