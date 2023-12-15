@@ -32,7 +32,7 @@ $container-max-widths: (
 @debug #{var(--breakpoint-sm)};
 
 .app-wrapper {
-  padding: 0 1rem;
+  padding: 0 1rem 3rem 1rem;
   margin-left: auto;
   margin-right: auto;
 
