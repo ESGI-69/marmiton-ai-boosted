@@ -1,7 +1,7 @@
 <template>
   <div class="profile">
     <h1 class="profile__title">
-      Mon profile
+      Mon profil
     </h1>
     <div class="profile__section">
       <h2 class="profile__section__title">
@@ -28,12 +28,29 @@
       </h2>
       <div class="profile__section__container recipes">
         <RecipeCard
-          v-for="{ recipe} in authStore.profile.favoriteRecipes"
+          v-for="{ recipe } in authStore.profile.favoriteRecipes"
           :id="recipe.id"
           :key="recipe.title"
           can-view
           :title="recipe.title"
           :description="recipe.description"
+        />
+      </div>
+    </div>
+    <div class="profile__section">
+      <h2 class="profile__section__title">
+        Mes commentaires récents
+      </h2>
+      <div class="profile__section__container comments">
+        <CommentCard
+          v-for="comment in authStore.profile.ratings"
+          :key="comment.id"
+          :comment="comment.comment"
+          :notation="comment.notation"
+          :name="comment.author.username"
+          :recipe="comment.recipe.title"
+          :recipe-id="comment.recipe.id"
+          :date="new Date(comment.createdAt)"
         />
       </div>
     </div>
@@ -46,6 +63,7 @@ import { useRouter } from 'vue-router';
 import { formatDateTime } from '@/utils/dateFormater';
 
 import RecipeCard from '@/components/RecipeCard.vue';
+import CommentCard from '@/components/CommentCard.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -65,10 +83,10 @@ if (!authStore.isLogged) {
   }
 
   &__section {
-    margin-top: var(--space-4);
+    margin-top: var(--space-8);
     display: flex;
     flex-direction: column;
-    gap: var(--space-8);
+    gap: var(--space-4);
 
     &__title {
       font-weight: bold;
@@ -102,6 +120,11 @@ if (!authStore.isLogged) {
       gap: var(--space-4);
     }
 
+    .comments {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+      gap: var(--space-4);
+    }
   }
 }
 </style>

@@ -86,6 +86,7 @@
           :notation="rating.notation"
           :name="rating.author.name"
           :comment="rating.comment"
+          :date="new Date(rating.createdAt)"
         />
       </div>
       <p

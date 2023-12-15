@@ -6,21 +6,31 @@
       alt="profile-picture"
     >
     <div class="comment-card__container">
-      <p>{{ name }}</p>
-      <p>{{ comment }}</p>
+      <div class="comment-card__container__header">
+        <span class="comment-card__container__header__name">{{ name }}</span>
+        <span class="comment-card__container__header__date">{{ formatDateTime(date) }}</span>
+      </div>
       <MultiStarsRating
         :model-value="notation"
-        :text-visible="false"
         class="comment-card__stars"
       />
+      <p>{{ comment }}</p>
+      <RouterLink
+        v-if="recipeId"
+        class="comment-card__container__recipe"
+        :to="{ name: 'recipe', params: { id: recipeId } }"
+      >
+        → {{ recipe }}
+      </RouterLink>
     </div>
   </div>
 </template>
 
 <script setup>
+import { formatDateTime } from '@/utils/dateFormater';
 import MultiStarsRating from '@/components/lib/MultiStarsRating.vue';
 
-const { notation, name, comment } = defineProps({
+defineProps({
   notation: {
     type: Number,
     required: true,
@@ -37,19 +47,30 @@ const { notation, name, comment } = defineProps({
     type: String,
     default: 'https://picsum.photos/300/300',
   },
+  recipe: {
+    type: String,
+    default: null,
+  },
+  recipeId: {
+    type: Number,
+    default: null,
+  },
+  date: {
+    type: Date,
+    required: true,
+  },
 });
 </script>
 
 <style lang="scss" scoped>
 .comment-card {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: var(--space-8) 1fr;
   padding: var(--space-4);
   gap: var(--space-4);
   background-color: var(--color-white);
-  width: 263px;
+  width: 100%;
   border-radius: var(--space-4);
-  flex-grow: 1;
 
   &__profile-picture {
     border-radius: var(--space-8);
@@ -62,6 +83,34 @@ const { notation, name, comment } = defineProps({
     flex-direction: column;
     gap: var(--space-4);
     align-items: flex-start;
+
+    &__header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: var(--space-4);
+
+      &__name {
+        font-weight: bold;
+      }
+
+      &__date {
+        font-weight: 200;
+        font-size: var(--text-sm);
+        color: var(--color-primary-light);
+      }
+    }
+
+    &__recipe {
+      font-weight: bold;
+      color: var(--color-primary-light);
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
   &__container > *:last-child {
     margin-top: auto;

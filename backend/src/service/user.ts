@@ -54,6 +54,25 @@ export default {
             },
           },
         },
+        ratings: {
+          select: {
+            id: true,
+            createdAt: true,
+            comment: true,
+            notation: true,
+            author: {
+              select: {
+                username: true,
+              },
+            },
+            recipe: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
+          },
+        },
       },
     });
   },
