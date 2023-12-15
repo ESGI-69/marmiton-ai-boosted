@@ -26,7 +26,7 @@ defineEmits([ 'click' ]);
 const { image, title, rating } = defineProps({
   image: {
     type: String,
-    default: 'http://placekitten.com/300/300',
+    default: 'https://picsum.photos/300/300',
   },
   title: {
     type: String,
