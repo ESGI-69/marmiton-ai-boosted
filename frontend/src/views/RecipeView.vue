@@ -21,9 +21,7 @@
       <h2 class="recipe__recommendeds__title">
         Recette recommandée
       </h2>
-      <span v-if="recipeStore.isSuggestRecipeLoading">
-        Je réfléchis...
-      </span>
+      <LoadingCircle v-if="recipeStore.isSuggestRecipeLoading" />
       <div
         v-else
         class="recipe__recommendeds__recommended"
@@ -112,6 +110,7 @@ import Textarea from '@/components/lib/Textarea.vue';
 import CommentCard from '@/components/CommentCard.vue';
 import RecipeSide from '@/components/RecipeSide.vue';
 import RecipeCard from '@/components/RecipeCard.vue';
+import LoadingCircle from '@/components/LoadingCircle.vue';
 
 const route = useRoute();
 const recipeStore = useRecipeStore();
