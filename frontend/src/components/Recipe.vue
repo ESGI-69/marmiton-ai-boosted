@@ -112,7 +112,7 @@ const favoriteRecipe = () => {
 const props = defineProps({
   imageUrl: {
     type: String,
-    default: 'http://placekitten.com/300/300',
+    default: 'https://picsum.photos/300/300',
   },
   notation: {
     type: Number,

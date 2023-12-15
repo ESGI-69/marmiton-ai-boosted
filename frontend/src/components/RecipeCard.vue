@@ -55,7 +55,7 @@ const loginModal = useModal({
 const props = defineProps({
   imageUrl: {
     type: String,
-    default: 'https://placedog.net/144/144',
+    default: 'https://picsum.photos/144/144',
   },
   title: {
     type: String,
