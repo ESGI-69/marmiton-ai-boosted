@@ -1,5 +1,6 @@
 import { prisma } from '../db';
 import prismaSearchQueryBuilder from '../utils/prismaSearchQueryBuilder';
+import { unaccent } from '../utils/formater';
 
 import ingredientService from './ingredient';
 import ingredientWithQuantityService from './ingredientWithQuantity';
@@ -30,6 +31,7 @@ export default {
 
     const recipe = await prisma.recipe.create({
       data: {
+        searchTitle: unaccent(recipeInput.title),
         title: recipeInput.title,
         description: recipeInput.description,
         ingredientsWithQuantity: {
@@ -104,7 +106,8 @@ export default {
   },
 
   search: async function (query: { title?: string; description?: string }) {
-    const prismaQuery = prismaSearchQueryBuilder(query);
+    const searchQuery = { searchTitle: unaccent(query.title || ''), description: query.description || '' };
+    const prismaQuery = prismaSearchQueryBuilder(searchQuery);
     const recipes = await prisma.recipe.findMany(prismaQuery);
     return recipes;
   },

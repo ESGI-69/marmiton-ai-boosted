@@ -52,6 +52,7 @@ model Ingredient {
 model Recipe {
   id                         Int                       @id @default(autoincrement())
   title                      String                    @unique
+  searchTitle                String                    @unique
   description                String
   steps                      String[]
   ingredientsWithQuantity    IngredientsWithQuantity[]
