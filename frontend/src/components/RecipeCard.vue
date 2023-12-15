@@ -2,7 +2,7 @@
   <div
     class="recipe-card"
     :class="{
-      'recipe-card--can-generate': canGenerate,
+      'recipe-card--can-generate': canGenerate || canView,
     }"
     @click="handleClick"
   >
@@ -57,6 +57,11 @@ const props = defineProps({
     type: String,
     default: 'https://picsum.photos/144/144',
   },
+  id: {
+    type: Number,
+    required: false,
+    default: 1,
+  },
   title: {
     type: String,
     required: true,
@@ -70,6 +75,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  canView: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const handleClick = () => {
@@ -80,6 +89,9 @@ const handleClick = () => {
     }
     recipieStore.generateRecipe(props.title);
     router.push({ name: 'generate-loading' });
+  }
+  if (props.canView) {
+    router.push({ name: 'recipe', params: { id: props.id } });
   }
 };
 </script>
