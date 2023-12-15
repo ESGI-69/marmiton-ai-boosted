@@ -37,6 +37,17 @@
         />
       </div>
     </section>
+    <section class="recipe__sides">
+      <h2 class="subtitle">
+        Accompagnements
+      </h2>
+      <p class="subtitle-desc">
+        Ajoutez un accompagnement avec votre recette.
+      </p>
+      <RecipeSide
+        :recipe="recipe.id"
+      />
+    </section>
     <section class="recipe__section">
       <h2 class="subtitle">
         Notez la recette
@@ -99,6 +110,7 @@ import MultiStarsRating from '@/components/lib/MultiStarsRating.vue';
 import Recipe from '@/components/Recipe.vue';
 import Textarea from '@/components/lib/Textarea.vue';
 import CommentCard from '@/components/CommentCard.vue';
+import RecipeSide from '@/components/RecipeSide.vue';
 import RecipeCard from '@/components/RecipeCard.vue';
 
 const route = useRoute();
@@ -127,6 +139,11 @@ const postComment = async () => {
   margin-bottom: var(--space-1);
   font-size: var(--text-xl);
   font-weight: 600;
+}
+
+.subtitle-desc {
+  color: var(--color-text-secondary);
+  margin-bottom: 1rem;
 }
 .recipe {
   display: flex;

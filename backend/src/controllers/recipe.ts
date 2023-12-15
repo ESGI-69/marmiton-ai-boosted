@@ -85,4 +85,52 @@ export default {
       next(error);
     }
   },
+
+  getWine: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      checkParams(['id'], req.params);
+      const id = parseInt(req.params.id);
+      const recipe = await recipeSerice.getTitleById(id);
+
+      const openAiQueryBuilder = OpenAIQueryBuilder.getInstance();
+      const openAiResponse = await openAiQueryBuilder.generateSides(recipe, 'vin');
+      const winesRecommendation = JSON.parse(openAiResponse.choices[0].message.content as string);
+
+      res.status(200).send(winesRecommendation);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  getCheese: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      checkParams(['id'], req.params);
+      const id = parseInt(req.params.id);
+      const recipe = await recipeSerice.getTitleById(id);
+
+      const openAiQueryBuilder = OpenAIQueryBuilder.getInstance();
+      const openAiResponse = await openAiQueryBuilder.generateSides(recipe, 'fromage');
+      const cheeseRecommendation = JSON.parse(openAiResponse.choices[0].message.content as string);
+
+      res.status(200).send(cheeseRecommendation);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  getDessert: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      checkParams(['id'], req.params);
+      const id = parseInt(req.params.id);
+      const recipe = await recipeSerice.getTitleById(id);
+
+      const openAiQueryBuilder = OpenAIQueryBuilder.getInstance();
+      const openAiResponse = await openAiQueryBuilder.generateSides(recipe, 'dessert');
+      const dessertRecommendation = JSON.parse(openAiResponse.choices[0].message.content as string);
+
+      res.status(200).send(dessertRecommendation);
+    } catch (error) {
+      next(error);
+    }
+  },
 };

@@ -30,6 +30,11 @@ Endpoints are documented in the [backend readme](./backend/readme.md)
       npm run start
     ```
 
+5. optional: if you have typing erros during dev
+    ```sh
+    npx prisma generate
+    ```
+
 ### Front
 
 1. deps install

@@ -4,6 +4,7 @@
     :class="{
       'button--light': type === 'light',
       'button--loading': isLoading,
+      'button--active': active,
     }"
     :disabled="disabled"
   >
@@ -22,6 +23,10 @@ defineProps({
     default: false,
   },
   isLoading: {
+    type: Boolean,
+    default: false,
+  },
+  active: {
     type: Boolean,
     default: false,
   },
@@ -47,12 +52,20 @@ defineProps({
     background: var(--color-primary-light);
   }
 
+  &--light.button--active {
+    background-color: var(--color-border);
+  }
+
   &--light {
     background: var(--color-white);
     color: var(--color-text);
     border: 1px solid var(--color-border);
     &:hover {
       background: var(--color-border);
+    }
+
+    &:disabled {
+      background: var(--color-primary-lighter);
     }
   }
 
