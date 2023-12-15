@@ -13,7 +13,7 @@
       >
         Home
       </RouterLink>
-      <RouterLink
+      <!-- <RouterLink
         to="/recipes"
         class="header__nav__link"
       >
@@ -24,7 +24,8 @@
         class="header__nav__link"
       >
         About
-      </RouterLink>
+      </RouterLink> -->
+      <div class="header__nav__speparator" />
       <Dropdown v-if="authStore.isLogged">
         <template #toggler>
           <button class="header__nav__profile">
@@ -144,6 +145,12 @@ const registerModal = useModal({
       }
     }
 
+    &__speparator {
+      width: 1px;
+      height: 20px;
+      background: var(--color-text);
+    }
+
     &__profile {
       display: flex;
       align-items: center;
@@ -163,6 +170,11 @@ const registerModal = useModal({
         border-radius: 100%;
       }
     }
+  }
+
+  @media screen and (max-width: 550px) {
+    flex-direction: column;
+    gap: var(--space-4);
   }
 }
 </style>
