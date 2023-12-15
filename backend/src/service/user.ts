@@ -43,6 +43,17 @@ export default {
         name: true,
         createdAt: true,
         updatedAt: true,
+        favoriteRecipes: {
+          select: {
+            recipe: {
+              select: {
+                id: true,
+                title: true,
+                description: true,
+              },
+            },
+          },
+        },
       },
     });
   },

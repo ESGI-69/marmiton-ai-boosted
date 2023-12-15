@@ -28,6 +28,12 @@ const router = createRouter({
       name: 'recipe',
       component: () => import('@/views/RecipeView.vue'),
     },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('@/views/ProfileView.vue'),
+      meta: { requiresAuth: true },
+    },
   ],
 });
 
