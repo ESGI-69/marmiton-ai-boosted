@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import userService from '../service/user';
 import checkMandatoryFields from '../utils/checkMandatoryFields';
+import checkParams from '../utils/checkParams';
 
 export default {
   post: async (req: Request, res: Response, next: NextFunction) => {
@@ -39,6 +40,28 @@ export default {
   me: (req: Request, res: Response, next: NextFunction) => {
     try {
       res.status(200).send(req.user);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  addAllergy: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!req.user) throw new Error('You must be logged in to add an allergy');
+      checkMandatoryFields(['name'], req.body);
+      await userService.addAllergy(req.user.id, req.body.name);
+      res.status(200).send();
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  deleteAllergy: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!req.user) throw new Error('You must be logged in to delete an allergy');
+      checkParams(['name'], req.params);
+      await userService.removeAllergy(req.user.id, req.params.name);
+      res.status(204).send();
     } catch (error) {
       next(error);
     }

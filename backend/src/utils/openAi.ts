@@ -22,11 +22,15 @@ class OpenAIQueryBuilder {
     return OpenAIQueryBuilder.instance;
   }
 
-  public async generateRecipe(prompt: string): Promise<OpenAI.Chat.Completions.ChatCompletion> {
+  public async generateRecipe(prompt: string, allergies: string[] = []): Promise<OpenAI.Chat.Completions.ChatCompletion> {
+    let enrichedSystemMessage = this.recipeGenerationSystemMessage;
+    if (allergies.length > 0) {
+      enrichedSystemMessage += ` Prend en compte les allergies suivantes et propose moi une recette que les personnes avec cette alergie peuvent manger : ${allergies.join(', ')}. Les allergies doivent obligatoirement etre préciées dans la description et le titre de la recette.`;
+    }
     const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
       {
         role: 'system',
-        content: this.recipeGenerationSystemMessage,
+        content: enrichedSystemMessage,
       },
       {
         role: 'user',

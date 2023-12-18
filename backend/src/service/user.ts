@@ -73,6 +73,8 @@ export default {
             },
           },
         },
+        allergies: true,
+        nonLikedIngredients: true,
       },
     });
   },
@@ -102,6 +104,39 @@ export default {
     return jwt.sign(jwtPayload, process.env.JWT_SECRET, {
       expiresIn: '1y',
       algorithm: 'HS256',
+    });
+  },
+
+  addAllergy: function (userId: number, allergyName: string) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        allergies: {
+          push: allergyName,
+        },
+      },
+    });
+  },
+
+  removeAllergy: async function (userId: number, allergyName: string) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        allergies: {
+          set: (await prisma.user.findUnique({
+            where: {
+              id: userId,
+            },
+            select: {
+              allergies: true,
+            },
+          }))?.allergies?.filter((allergy) => allergy !== allergyName),
+        },
+      },
     });
   },
 };

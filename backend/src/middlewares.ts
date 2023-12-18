@@ -5,7 +5,7 @@ import { NextFunction, Request, Response } from 'express';
 // Add the user property to the Request interface
 declare module 'express-serve-static-core' {
   interface Request {
-    user?: { id: number, username: string, name: string | null }
+    user?: { id: number, username: string, name: string | null, allergies: string[] }
   }
 }
 

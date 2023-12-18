@@ -7,6 +7,9 @@
       <h2 class="profile__section__title">
         Informations personnelles
       </h2>
+      <div class="profile__section__subtitle">
+        Des informations vous concernant.
+      </div>
       <div class="profile__section__container fields">
         <div class="fields__field">
           <span class="fields__field__title">Nom d'utilisateur</span>
@@ -26,6 +29,9 @@
       <h2 class="profile__section__title">
         Mes recettes préférées
       </h2>
+      <div class="profile__section__subtitle">
+        Les recettes que vous avez aimé.
+      </div>
       <div class="profile__section__container recipes">
         <RecipeCard
           v-for="{ recipe } in authStore.profile.favoriteRecipes"
@@ -41,6 +47,9 @@
       <h2 class="profile__section__title">
         Mes commentaires récents
       </h2>
+      <div class="profile__section__subtitle">
+        Les commentaires que vous avez posté sur les recettes.
+      </div>
       <div class="profile__section__container comments">
         <CommentCard
           v-for="comment in authStore.profile.ratings"
@@ -54,6 +63,26 @@
         />
       </div>
     </div>
+    <div class="profile__section">
+      <h2 class="profile__section__title">
+        Mes allergies
+      </h2>
+      <div class="profile__section__subtitle">
+        Ici vous pouvez gérer vos allergies.
+      </div>
+      <div class="profile__section__container">
+        <Allergies :allergies="authStore.profile.allergies" />
+      </div>
+    </div>
+    <div class="profile__section">
+      <h2 class="profile__section__title">
+        Mes ingredients que je n'aime pas
+      </h2>
+      <div class="profile__section__subtitle">
+        Ici vous pouvez renseigner les ingredients que vous ne souhaitez pas consommer.
+      </div>
+      <div class="profile__section__container" />
+    </div>
   </div>
 </template>
 
@@ -62,6 +91,7 @@ import { useAuthStore } from '@/stores/authStore';
 import { useRouter } from 'vue-router';
 import { formatDateTime } from '@/utils/dateFormater';
 
+import Allergies from '@/components/Allergies.vue';
 import RecipeCard from '@/components/RecipeCard.vue';
 import CommentCard from '@/components/CommentCard.vue';
 
@@ -84,16 +114,19 @@ if (!authStore.isLogged) {
 
   &__section {
     margin-top: var(--space-8);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
 
     &__title {
       font-weight: bold;
       font-size: var(--text-2xl);
     }
 
+    &__subtitle {
+      font-size: var(--text-md);
+      color: var(--color-primary-light);
+    }
+
     &__container {
+      margin-top: var(--space-2);
       display: flex;
       flex-direction: column;
       gap: var(--space-4);
@@ -124,6 +157,25 @@ if (!authStore.isLogged) {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
       gap: var(--space-4);
+    }
+
+    .allergies {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+
+      &__tags {
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-2);
+      }
+
+      &__add {
+        background: red;
+        display: flex;
+        flex-direction: row;
+        gap: var(--space-2);
+      }
     }
   }
 }
