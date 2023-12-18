@@ -110,11 +110,11 @@ const changeTab = async (tab) => {
     await recipeStore.getWineSuggestions(props.recipe);
     isWines.value = true;
   }
-  if (tab === 'dessert' && isDesserts.value === null) {
+  if (tab === 'dessert' && isDesserts.value === false) {
     await recipeStore.getDessertSuggestions(props.recipe);
     isDesserts.value = true;
   }
-  if (tab === 'cheese' && isCheeses.value === null) {
+  if (tab === 'cheese' && isCheeses.value === false) {
     await recipeStore.getCheeseSuggestions(props.recipe);
     isCheeses.value = true;
   }

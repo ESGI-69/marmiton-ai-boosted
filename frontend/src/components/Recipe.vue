@@ -29,7 +29,7 @@
     </div>
     <div class="recipe__ingredients">
       <h2>
-        Ingredients
+        Ingrédients
       </h2>
       <table>
         <tbody>
@@ -50,7 +50,7 @@
     </div>
     <div class="recipe__steps">
       <h2>
-        Steps
+        Étapes
       </h2>
       <ol>
         <li
@@ -65,7 +65,7 @@
 
 
     <div class="recipe__shopping-list">
-      <h2>Get or share your shopping list</h2>
+      <h2>Partage ou télécharge ta liste de course</h2>
       <RecipeShoppingList
         :ingredients="ingredients"
       />
