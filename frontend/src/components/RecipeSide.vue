@@ -32,7 +32,10 @@
         class="sides__tabs__wine"
       >
         <LoadingCircle v-if="isWineSuggestionsLoading" />
-        <div class="sides__tabs__container">
+        <div
+          v-if="isWines"
+          class="sides__tabs__container"
+        >
           <RecipeCard
             v-for="wine in wineSuggestions.sides"
             :key="wine"
@@ -45,7 +48,10 @@
         class="sides__tabs__dessert"
       >
         <LoadingCircle v-if="isDessertSuggestionsLoading" />
-        <div class="sides__tabs__container">
+        <div
+          v-if="isDesserts"
+          class="sides__tabs__container"
+        >
           <RecipeCard
             v-for="dessert in dessertSuggestions.sides"
             :key="dessert"
@@ -58,7 +64,10 @@
         class="sides__tabs__cheese"
       >
         <LoadingCircle v-if="isCheeseSuggestionsLoading" />
-        <div class="sides__tabs__container">
+        <div
+          v-if="isCheeses"
+          class="sides__tabs__container"
+        >
           <RecipeCard
             v-for="cheese in cheeseSuggestions.sides"
             :key="cheese"
@@ -91,23 +100,23 @@ const dessertSuggestions = computed(() => recipeStore.dessertSuggestions);
 const cheeseSuggestions = computed(() => recipeStore.cheeseSuggestions);
 
 const activeButton = ref(null);
-const wines = ref(null);
-const desserts = ref(null);
-const cheeses = ref(null);
+const isWines = ref(false);
+const isDesserts = ref(false);
+const isCheeses = ref(false);
 
 const changeTab = async (tab) => {
   activeButton.value = tab;
-  if (tab === 'wine' && wines.value === null) {
+  if (tab === 'wine' && isWines.value === false) {
     await recipeStore.getWineSuggestions(props.recipe);
-    wines.value = recipeStore.wineSuggestions;
+    isWines.value = true;
   }
-  if (tab === 'dessert' && desserts.value === null) {
+  if (tab === 'dessert' && isDesserts.value === null) {
     await recipeStore.getDessertSuggestions(props.recipe);
-    desserts.value = recipeStore.dessertSuggestions;
+    isDesserts.value = true;
   }
-  if (tab === 'cheese' && cheeses.value === null) {
+  if (tab === 'cheese' && isCheeses.value === null) {
     await recipeStore.getCheeseSuggestions(props.recipe);
-    cheeses.value = recipeStore.cheeseSuggestions;
+    isCheeses.value = true;
   }
 };
 

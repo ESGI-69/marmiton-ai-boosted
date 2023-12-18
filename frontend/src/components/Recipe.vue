@@ -62,6 +62,14 @@
         </li>
       </ol>
     </div>
+
+
+    <div class="recipe__shopping-list">
+      <h2>Get or share your shopping list</h2>
+      <RecipeShoppingList
+        :ingredients="ingredients"
+      />
+    </div>
   </div>
 </template>
 
@@ -73,6 +81,7 @@ import { useRecipeStore } from '@/stores/recipeStore';
 import { useModal } from 'vue-final-modal';
 import Modal from '@/components/lib/Modal.vue';
 import Login from '@/components/Modals/Login.vue';
+import RecipeShoppingList from './RecipeShoppingList.vue';
 
 const authStore = useAuthStore();
 const recipieStore = useRecipeStore();
@@ -241,6 +250,14 @@ const props = defineProps({
       li::marker {
         font-weight: 500;
       }
+    }
+  }
+
+  &__shopping-list {
+    h2 {
+      all: unset;
+      font-size: var(--text-xl);
+      font-weight: 600;
     }
   }
 }
