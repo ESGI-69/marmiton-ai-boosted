@@ -66,4 +66,26 @@ export default {
       next(error);
     }
   },
+
+  addNonLikedIngredient: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!req.user) throw new Error('You must be logged in to add a non liked ingredient');
+      checkMandatoryFields(['name'], req.body);
+      await userService.addNonLikedIngredient(req.user.id, req.body.name);
+      res.status(200).send();
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  deleteNonLikedIngredient: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      if (!req.user) throw new Error('You must be logged in to delete a non liked ingredient');
+      checkParams(['name'], req.params);
+      await userService.removeNonLikedIngredient(req.user.id, req.params.name);
+      res.status(204).send();
+    } catch (error) {
+      next(error);
+    }
+  },
 };

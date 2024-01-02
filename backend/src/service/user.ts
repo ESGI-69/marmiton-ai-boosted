@@ -139,4 +139,37 @@ export default {
       },
     });
   },
+
+  addNonLikedIngredient: function (userId: number, ingredientName: string) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        nonLikedIngredients: {
+          push: ingredientName,
+        },
+      },
+    });
+  },
+
+  removeNonLikedIngredient: async function (userId: number, ingredientName: string) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        nonLikedIngredients: {
+          set: (await prisma.user.findUnique({
+            where: {
+              id: userId,
+            },
+            select: {
+              nonLikedIngredients: true,
+            },
+          }))?.nonLikedIngredients?.filter((ingredient) => ingredient !== ingredientName),
+        },
+      },
+    });
+  },
 };

@@ -81,7 +81,9 @@
       <div class="profile__section__subtitle">
         Ici vous pouvez renseigner les ingredients que vous ne souhaitez pas consommer.
       </div>
-      <div class="profile__section__container" />
+      <div class="profile__section__container">
+        <NonLikedIngredients :non-liked-ingredients="authStore.profile.nonLikedIngredients" />
+      </div>
     </div>
   </div>
 </template>
@@ -94,6 +96,7 @@ import { formatDateTime } from '@/utils/dateFormater';
 import Allergies from '@/components/Allergies.vue';
 import RecipeCard from '@/components/RecipeCard.vue';
 import CommentCard from '@/components/CommentCard.vue';
+import NonLikedIngredients from '@/components/NonLikedIngredients.vue';
 
 const authStore = useAuthStore();
 const router = useRouter();

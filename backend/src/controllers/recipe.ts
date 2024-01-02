@@ -32,7 +32,7 @@ export default {
       const openAiQueryBuilder = OpenAIQueryBuilder.getInstance();
       checkMandatoryFields(['prompt'], req.body);
       const prompt = req.body.prompt;
-      const openAiResponse = await openAiQueryBuilder.generateRecipe(prompt, req.user.allergies);
+      const openAiResponse = await openAiQueryBuilder.generateRecipe(prompt, req.user.allergies, req.user.nonLikedIngredients);
       const openAiRecipie = JSON.parse(openAiResponse.choices[0].message.content as string);
       const exisitingRecipie = await recipeSerice.checkIfTitleExist(openAiRecipie.title);
       if (exisitingRecipie) {
