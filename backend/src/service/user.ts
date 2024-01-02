@@ -43,6 +43,38 @@ export default {
         name: true,
         createdAt: true,
         updatedAt: true,
+        favoriteRecipes: {
+          select: {
+            recipe: {
+              select: {
+                id: true,
+                title: true,
+                description: true,
+              },
+            },
+          },
+        },
+        ratings: {
+          select: {
+            id: true,
+            createdAt: true,
+            comment: true,
+            notation: true,
+            author: {
+              select: {
+                username: true,
+              },
+            },
+            recipe: {
+              select: {
+                id: true,
+                title: true,
+              },
+            },
+          },
+        },
+        allergies: true,
+        nonLikedIngredients: true,
       },
     });
   },
@@ -72,6 +104,72 @@ export default {
     return jwt.sign(jwtPayload, process.env.JWT_SECRET, {
       expiresIn: '1y',
       algorithm: 'HS256',
+    });
+  },
+
+  addAllergy: function (userId: number, allergyName: string) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        allergies: {
+          push: allergyName,
+        },
+      },
+    });
+  },
+
+  removeAllergy: async function (userId: number, allergyName: string) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        allergies: {
+          set: (await prisma.user.findUnique({
+            where: {
+              id: userId,
+            },
+            select: {
+              allergies: true,
+            },
+          }))?.allergies?.filter((allergy) => allergy !== allergyName),
+        },
+      },
+    });
+  },
+
+  addNonLikedIngredient: function (userId: number, ingredientName: string) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        nonLikedIngredients: {
+          push: ingredientName,
+        },
+      },
+    });
+  },
+
+  removeNonLikedIngredient: async function (userId: number, ingredientName: string) {
+    return prisma.user.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        nonLikedIngredients: {
+          set: (await prisma.user.findUnique({
+            where: {
+              id: userId,
+            },
+            select: {
+              nonLikedIngredients: true,
+            },
+          }))?.nonLikedIngredients?.filter((ingredient) => ingredient !== ingredientName),
+        },
+      },
     });
   },
 };

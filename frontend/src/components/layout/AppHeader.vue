@@ -49,7 +49,11 @@
           </button>
         </template>
         <DropdownList>
-          <DropdownListItem>Profile</DropdownListItem>
+          <RouterLink
+            :to="{ name: 'profile' }"
+          >
+            <DropdownListItem>Profile</DropdownListItem>
+          </RouterLink>
           <DropdownListItem @click="authStore.logout">
             Log out
           </DropdownListItem>

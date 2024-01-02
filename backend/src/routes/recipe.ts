@@ -7,7 +7,7 @@ const router = Router();
 
 router.get('/', recipeController.search);
 router.get('/search', recipeController.search);
-router.post('/generate', recipeController.searchAi);
+router.post('/generate', isLogged, recipeController.generate);
 router.get('/:id', recipeController.get);
 router.get('/:id/suggest/recipies', recipeController.suggestRecipies);
 router.get('/:id/suggest/wine', recipeController.getWine);

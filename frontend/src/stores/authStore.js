@@ -10,6 +10,12 @@ export const useAuthStore = defineStore('authStore', {
 
     isProfileLoading: false,
     profile: {},
+
+    isRemoveAllergyLoading: false,
+    isAddAllergyLoading: false,
+
+    isAddNonLikedIngredientsLoading: false,
+    isRemoveNonLikedIngredientsLoading: false,
   }),
 
   getters: {
@@ -62,6 +68,60 @@ export const useAuthStore = defineStore('authStore', {
         this.profile = {};
       } finally {
         this.isProfileLoading = false;
+      }
+    },
+
+    async addAllergy(name) {
+      this.isAddAllergyLoading = true;
+      try {
+        await api.post('users/me/allergies/', { name });
+        this.profile.allergies.push(name);
+      } catch (error) {
+        console.error(error);
+        throw error;
+      } finally {
+        this.isAddAllergyLoading = false;
+      }
+    },
+
+    async removeAllergy(name) {
+      this.isRemoveAllergyLoading = true;
+      try {
+        await api.delete(`users/me/allergies/${name}`);
+        this.profile.allergies = this.profile.allergies.filter((allergy) => allergy !== name);
+      } catch (error) {
+        console.error(error);
+        throw error;
+      } finally {
+        this.isRemoveAllergyLoading = false;
+      }
+    },
+
+    async addNonLikedIngredient(name) {
+      this.isAddNonLikedIngredientsLoading = true;
+      try {
+        await api.post('users/me/non-liked-ingredients', { name });
+        this.profile.nonLikedIngredients.push(name);
+      } catch (error) {
+        console.error(error);
+        throw error;
+      } finally {
+        this.isAddNonLikedIngredientsLoading = false;
+      }
+    },
+
+    async removeNonLikedIngredient(name) {
+      this.isRemoveNonLikedIngredientsLoading = true;
+      try {
+        await api.delete(`users/me/non-liked-ingredients/${name}`);
+        this.profile.nonLikedIngredients = this.profile.nonLikedIngredients.filter(
+          (ingredient) => ingredient !== name,
+        );
+      } catch (error) {
+        console.error(error);
+        throw error;
+      } finally {
+        this.isRemoveNonLikedIngredientsLoading = false;
       }
     },
 
