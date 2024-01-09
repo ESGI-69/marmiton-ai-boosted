@@ -10,12 +10,13 @@
         <template #results>
           <div class="results">
             <div
-              v-for="{ id, title } in searchResults"
+              v-for="{ id, title, imageUrl } in searchResults"
               :key="id"
               class="results__general"
             >
               <RecipeRow
                 :title="title"
+                :image-url="imageUrl"
                 :to="{ name: 'recipe', params: { id }}"
                 @click="handleRecipeClick(id)"
               />
