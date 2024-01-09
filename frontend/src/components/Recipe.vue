@@ -22,10 +22,12 @@
       <p class="recipe__info__description">
         {{ description }}
       </p>
-      <img
+      <div
         class="recipe__info__image"
-        :src="imageUrl"
-      >
+        :style="{
+          backgroundImage: `url(${imageUrl})`,
+        }"
+      />
     </div>
     <div class="recipe__ingredients">
       <h2>
@@ -205,7 +207,10 @@ const props = defineProps({
 
     &__image {
       grid-area: image;
-      width: 10rem;
+      width: 13rem;
+      height: 13rem;
+      background-size: cover;
+      background-position: center;
       border-radius: var(--space-2);
       box-shadow: var(--box-shadown);
     }

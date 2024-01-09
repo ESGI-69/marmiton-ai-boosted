@@ -16,7 +16,7 @@ interface CreateRecipeInput {
 }
 
 export default {
-  create: async function (recipeInput: CreateRecipeInput) {
+  create: async function (recipeInput: CreateRecipeInput, imageUrl: string = '') {
     const ingredients = await ingredientService.createManyIfNotExist(recipeInput.ingredientsWithQuantities);
 
     const ingredientIdsWithQuantities = recipeInput.ingredientsWithQuantities.map(({ name, quantity }) => {
@@ -38,6 +38,7 @@ export default {
           connect: ingredientsWithQuantity.map(({ id }) => ({ id })),
         },
         steps: recipeInput.steps,
+        imageUrl,
       },
       include: {
         ingredientsWithQuantity: {
