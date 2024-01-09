@@ -50,6 +50,7 @@ export default {
                 id: true,
                 title: true,
                 description: true,
+                imageUrl: true,
               },
             },
           },

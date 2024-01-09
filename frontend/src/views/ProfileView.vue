@@ -40,6 +40,7 @@
           can-view
           :title="recipe.title"
           :description="recipe.description"
+          :image-url="recipe.imageUrl"
         />
       </div>
     </div>

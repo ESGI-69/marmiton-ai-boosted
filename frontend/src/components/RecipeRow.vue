@@ -5,7 +5,7 @@
   >
     <img
       class="recipe-row__image"
-      :src="image"
+      :src="imageUrl"
       :alt="`${title} image`"
     >
     <span class="recipe-row__title">
@@ -23,8 +23,8 @@ import StarRating from './lib/StarRating.vue';
 
 defineEmits([ 'click' ]);
 
-const { image, title, rating } = defineProps({
-  image: {
+const { imageUrl, title, rating } = defineProps({
+  imageUrl: {
     type: String,
     default: 'https://picsum.photos/300/300',
   },
@@ -59,6 +59,9 @@ const { image, title, rating } = defineProps({
 
   &__image {
     border-radius: var(--space-2);
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
   }
 
   &__title {
