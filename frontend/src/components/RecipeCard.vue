@@ -6,10 +6,12 @@
     }"
     @click="handleClick"
   >
-    <img
+    <div
       class="recipe-card__image"
-      :src="imageUrl"
-    >
+      :style="{
+        backgroundImage: `url(${imageUrl})`,
+      }"
+    />
     <div class="recipe-card__content">
       <h1 class="recipe-card__content__title">
         {{ title }}
@@ -116,6 +118,9 @@ const handleClick = () => {
 
   &__image {
     width: 100%;
+    height: 144px;
+    background-size: cover;
+    background-position: center;
     box-shadow: var(--box-shadown);
   }
 

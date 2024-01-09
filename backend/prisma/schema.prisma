@@ -61,6 +61,7 @@ model Recipe {
   ingredientsWithQuantityIds Int[]
   favoriteByUsers            FavoriteUserRecipe[]
   ratings                    Rating[]
+  imageUrl                   String                    @default("")
   createdAt                  DateTime                  @default(now())
   updatedAt                  DateTime                  @updatedAt
 }

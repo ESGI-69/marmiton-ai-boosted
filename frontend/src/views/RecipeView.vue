@@ -15,6 +15,7 @@
         :ingredients="recipe.ingredientsWithQuantity.map(ingredient => ({ name: ingredient.ingredient.name, quantity: ingredient.quantity }))"
         :is-favorite="recipe.isFavorite"
         :favorite-count="recipe.favoriteCount"
+        :image-url="recipe.imageUrl"
       />
     </section>
     <section class="recipe__recommendeds">
@@ -32,6 +33,7 @@
           can-generate
           :title="suggestedRecipe.title"
           :description="suggestedRecipe.description"
+          :image-url="suggestedRecipe.imageUrl"
         />
       </div>
     </section>

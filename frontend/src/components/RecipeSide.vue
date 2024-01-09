@@ -38,8 +38,9 @@
         >
           <RecipeCard
             v-for="wine in wineSuggestions.sides"
-            :key="wine"
-            :title="wine"
+            :key="wine.title"
+            :title="wine.title"
+            :image-url="wine.imageUrl"
           />
         </div>
       </div>
@@ -54,8 +55,9 @@
         >
           <RecipeCard
             v-for="dessert in dessertSuggestions.sides"
-            :key="dessert"
-            :title="dessert"
+            :key="dessert.title"
+            :title="dessert.title"
+            :image-url="dessert.imageUrl"
           />
         </div>
       </div>
@@ -70,8 +72,9 @@
         >
           <RecipeCard
             v-for="cheese in cheeseSuggestions.sides"
-            :key="cheese"
-            :title="cheese"
+            :key="cheese.title"
+            :title="cheese.title"
+            :image-url="cheese.imageUrl"
           />
         </div>
       </div>
