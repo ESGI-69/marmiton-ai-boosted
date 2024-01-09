@@ -4,7 +4,9 @@ import checkParams from '../utils/checkParams';
 import checkQueryParams from '../utils/checkQueryParams';
 import OpenAIQueryBuilder from '../utils/openAi';
 import checkMandatoryFields from '../utils/checkMandatoryFields';
-import imageSearch from 'duckduckgo-images-api';
+import generateImage from '../utils/generateImage';
+
+interface Recomendation { title: string, imageUrl?: string }
 
 export default {
   get: async (req: Request, res: Response, next: NextFunction) => {
@@ -33,10 +35,7 @@ export default {
       const openAiQueryBuilder = OpenAIQueryBuilder.getInstance();
       checkMandatoryFields(['prompt'], req.body);
       const prompt = req.body.prompt;
-      const [ { image: imageUrl } ] = await imageSearch.image_search({
-        query: prompt,
-        moderate: true,
-      });
+      const imageUrl = await generateImage(prompt);
       const openAiResponse = await openAiQueryBuilder.generateRecipe(prompt, req.user.allergies, req.user.nonLikedIngredients);
       const openAiRecipie = JSON.parse(openAiResponse.choices[0].message.content as string);
       const exisitingRecipie = await recipeSerice.checkIfTitleExist(openAiRecipie.title);
@@ -86,13 +85,12 @@ export default {
       const openAiQueryBuilder = OpenAIQueryBuilder.getInstance();
       const openAiResponse = await openAiQueryBuilder.suggestRecipies(recipe.title);
       const openAiRecipies = openAiResponse.choices.map((choice) => JSON.parse(choice.message.content as string));
-      for (const openAiRecipie of openAiRecipies[0].suggestions) {
-        const [ { image: imageUrl } ] = await imageSearch.image_search({
-          query: openAiRecipie.title,
-          moderate: true,
-        });
-        openAiRecipie.imageUrl = imageUrl;
-      }
+
+      await Promise.all(
+        openAiRecipies[0].suggestions.map(async (openAiRecipie: Recomendation) => {
+          openAiRecipie.imageUrl = await generateImage(openAiRecipie.title);
+        }),
+      );
       res.status(200).send(openAiRecipies[0].suggestions || openAiRecipies[0]);
     } catch (error) {
       next(error);
@@ -109,15 +107,13 @@ export default {
       const openAiResponse = await openAiQueryBuilder.generateSides(recipe, 'vin');
       const winesRecommendation = JSON.parse(openAiResponse.choices[0].message.content as string);
 
-      const enrichedWinesRecommendation = winesRecommendation.sides.map((wine: string) => ({ title: wine }));
+      const enrichedWinesRecommendation: Recomendation[] = winesRecommendation.sides.map((wine: string) => ({ title: wine }));
 
-      for (const wine of enrichedWinesRecommendation) {
-        const [ { image: imageUrl } ] = await imageSearch.image_search({
-          query: `${wine.title} vin`,
-          moderate: true,
-        });
-        wine.imageUrl = imageUrl;
-      }
+      await Promise.all(
+        enrichedWinesRecommendation.map(async (wine) => {
+          wine.imageUrl = await generateImage(`${wine.title} vin`);
+        }),
+      );
 
       res.status(200).send({ sides: enrichedWinesRecommendation });
     } catch (error) {
@@ -135,15 +131,13 @@ export default {
       const openAiResponse = await openAiQueryBuilder.generateSides(recipe, 'fromage');
       const cheeseRecommendation = JSON.parse(openAiResponse.choices[0].message.content as string);
 
-      const enrichedCheeseRecommendation = cheeseRecommendation.sides.map((cheese: string) => ({ title: cheese }));
+      const enrichedCheeseRecommendation: Recomendation[] = cheeseRecommendation.sides.map((cheese: string) => ({ title: cheese }));
 
-      for (const cheese of enrichedCheeseRecommendation) {
-        const [ { image: imageUrl } ] = await imageSearch.image_search({
-          query: `${cheese.title} fromage`,
-          moderate: true,
-        });
-        cheese.imageUrl = imageUrl;
-      }
+      await Promise.all(
+        enrichedCheeseRecommendation.map(async (cheese) => {
+          cheese.imageUrl = await generateImage(`${cheese.title} fromage`);
+        }),
+      );
 
       res.status(200).send({ sides: enrichedCheeseRecommendation });
     } catch (error) {
@@ -161,15 +155,13 @@ export default {
       const openAiResponse = await openAiQueryBuilder.generateSides(recipe, 'dessert');
       const dessertRecommendation = JSON.parse(openAiResponse.choices[0].message.content as string);
 
-      const enrichedDessertRecommendation = dessertRecommendation.sides.map((dessert: string) => ({ title: dessert }));
+      const enrichedDessertRecommendation: Recomendation[] = dessertRecommendation.sides.map((dessert: string) => ({ title: dessert }));
 
-      for (const dessert of enrichedDessertRecommendation) {
-        const [ { image: imageUrl } ] = await imageSearch.image_search({
-          query: `${dessert.title} dessert`,
-          moderate: true,
-        });
-        dessert.imageUrl = imageUrl;
-      }
+      await Promise.all(
+        enrichedDessertRecommendation.map(async (dessert) => {
+          dessert.imageUrl = await generateImage(`${dessert.title} dessert`);
+        }),
+      );
 
       res.status(200).send({ sides: enrichedDessertRecommendation });
     } catch (error) {
