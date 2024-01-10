@@ -127,7 +127,7 @@ const props = defineProps({
   },
   notation: {
     type: Number,
-    default: 4.2,
+    default: 0,
   },
   title: {
     type: String,
