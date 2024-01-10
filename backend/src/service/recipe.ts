@@ -84,7 +84,6 @@ export default {
       },
     });
 
-
     let averageRating = 0;
     if (recipe) {
       averageRating = recipe.ratings.reduce((acc, rating) => acc + rating.notation, 0) / recipe.ratings.length || 0;
