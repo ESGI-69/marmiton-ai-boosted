@@ -84,12 +84,18 @@ export default {
       },
     });
 
+    let averageRating = 0;
+    if (recipe) {
+      averageRating = recipe.ratings.reduce((acc, rating) => acc + rating.notation, 0) / recipe.ratings.length || 0;
+      averageRating = Math.round(averageRating * 10) / 10;
+    }
+
     let isFavorite = false;
     if (userId && recipe) {
       isFavorite = recipe.favoriteByUsers.some((favorite) => favorite.userId === userId);
     }
     const favoriteCount = recipe?.favoriteByUsers.length || 0;
-    const returnRecipe = { ...recipe, isFavorite, favoriteCount };
+    const returnRecipe = { ...recipe, isFavorite, favoriteCount, averageRating };
     delete returnRecipe.favoriteByUsers;
     return returnRecipe;
   },

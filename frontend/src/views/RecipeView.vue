@@ -15,6 +15,7 @@
         :ingredients="recipe.ingredientsWithQuantity.map(ingredient => ({ name: ingredient.ingredient.name, quantity: ingredient.quantity }))"
         :is-favorite="recipe.isFavorite"
         :favorite-count="recipe.favoriteCount"
+        :notation="recipe.averageRating"
         :image-url="recipe.imageUrl"
       />
     </section>
