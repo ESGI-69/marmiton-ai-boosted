@@ -24,6 +24,9 @@ export const useRecipeStore = defineStore('recipeStore', {
     searchResults: [],
     isSearchRecipeLoading: false,
 
+    recommendedRecipes: [],
+    isRecommendedRecipeLoading: false,
+
     isReviewRecipeLoading: false,
 
     wineSuggestions: [],
@@ -46,6 +49,19 @@ export const useRecipeStore = defineStore('recipeStore', {
         throw error.response.data;
       } finally {
         this.isRecipeLoading = false;
+      }
+    },
+
+    async getRecommendedRecipes() {
+      this.isRecommendedRecipeLoading = true;
+      try {
+        const { data } = await api.get('recipes/recommended');
+        this.recommendedRecipes = data;
+        return;
+      } catch (error) {
+        throw error.response.data;
+      } finally {
+        this.isRecommendedRecipeLoading = false;
       }
     },
 

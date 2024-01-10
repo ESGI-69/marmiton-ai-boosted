@@ -25,6 +25,16 @@ export default {
       next(error);
     }
   },
+
+  getRecommended: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const recommendedRecipes = await recipeSerice.getMostFav(6);
+      res.status(200).json(recommendedRecipes);
+    } catch (error) {
+      next(error);
+    }
+  },
+
   search: async (req: Request, res: Response, next: NextFunction) => {
     try {
       checkQueryParams(['title', 'description'], req.query);

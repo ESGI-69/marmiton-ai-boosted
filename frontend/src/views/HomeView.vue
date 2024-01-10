@@ -40,6 +40,17 @@
       <h2 class="section__title">
         Recommendations
       </h2>
+      <div class="section__cards">
+        <RecipeCard
+          v-for="suggestedRecipe in recipeStore.recommendedRecipes"
+          :id="suggestedRecipe.id"
+          :key="suggestedRecipe.title"
+          :title="suggestedRecipe.title"
+          :description="suggestedRecipe.description"
+          :image-url="suggestedRecipe.imageUrl"
+          can-view
+        />
+      </div>
     </section>
     <section>
       <h2 class="section__title">
@@ -66,6 +77,7 @@ import { useModal } from 'vue-final-modal';
 import Modal from '@/components/lib/Modal.vue';
 import Login from '@/components/Modals/Login.vue';
 import { useAuthStore } from '@/stores/authStore';
+import RecipeCard from '@/components/RecipeCard.vue';
 
 const router = useRouter();
 const recipeStore = useRecipeStore();
@@ -103,6 +115,7 @@ const handleRecipeGenerationClick = async () => {
 
 const searchResults = computed(() => recipeStore.searchResults);
 const isSearchRecipeLoading = computed(() => recipeStore.isSearchRecipeLoading);
+recipeStore.getRecommendedRecipes();
 </script>
 
 
@@ -154,6 +167,12 @@ const isSearchRecipeLoading = computed(() => recipeStore.isSearchRecipeLoading);
     font-size: var(--text-sm);
     margin-bottom: var(--space-4);
     color: var(--color-text-secondary);
+  }
+
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: var(--space-4);
   }
 }
 </style>

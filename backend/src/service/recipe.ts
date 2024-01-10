@@ -100,6 +100,18 @@ export default {
     return returnRecipe;
   },
 
+  getMostFav: async function (limit: number = 10) {
+    const recipes = await prisma.recipe.findMany({
+      orderBy: {
+        favoriteByUsers: {
+          _count: 'desc',
+        },
+      },
+      take: limit,
+    });
+    return recipes;
+  },
+
   checkExist: async function (id: number) {
     return (await prisma.recipe.count({
       where: {
