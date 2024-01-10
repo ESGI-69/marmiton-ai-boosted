@@ -8,6 +8,12 @@ import generateImage from '../utils/generateImage';
 
 interface Recomendation { title: string, imageUrl?: string }
 
+export type Filters = {
+  vegan: boolean;
+  lactoseFree: boolean;
+  calories: null | '<300' | '300-600' | '>600';
+} | null;
+
 export default {
   get: async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -35,8 +41,9 @@ export default {
       const openAiQueryBuilder = OpenAIQueryBuilder.getInstance();
       checkMandatoryFields(['prompt'], req.body);
       const prompt = req.body.prompt;
+      const filters = req.body.filters as Filters;
       const imageUrl = await generateImage(prompt);
-      const openAiResponse = await openAiQueryBuilder.generateRecipe(prompt, req.user.allergies, req.user.nonLikedIngredients);
+      const openAiResponse = await openAiQueryBuilder.generateRecipe(prompt, req.user.allergies, req.user.nonLikedIngredients, filters);
       const openAiRecipie = JSON.parse(openAiResponse.choices[0].message.content as string);
       const exisitingRecipie = await recipeSerice.checkIfTitleExist(openAiRecipie.title);
       if (exisitingRecipie) {

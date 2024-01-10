@@ -1,4 +1,5 @@
 import OpenAI, { ClientOptions } from 'openai';
+import { Filters } from '../controllers/recipe';
 
 class OpenAIQueryBuilder {
   private static instance: OpenAIQueryBuilder;
@@ -22,10 +23,24 @@ class OpenAIQueryBuilder {
     return OpenAIQueryBuilder.instance;
   }
 
-  public async generateRecipe(prompt: string, allergies: string[] = [], nonLikedIngredients: string[] = []): Promise<OpenAI.Chat.Completions.ChatCompletion> {
+  public async generateRecipe(
+    prompt: string,
+    allergies: string[] = [],
+    nonLikedIngredients: string[] = [],
+    filters: Filters = { vegan: false, lactoseFree: false, calories: null },
+  ): Promise<OpenAI.Chat.Completions.ChatCompletion> {
     let enrichedSystemMessage = this.recipeGenerationSystemMessage;
     if ([...allergies, ...nonLikedIngredients].length > 0) {
       enrichedSystemMessage += ` Prend en compte les aliment interdit suivant et propose moi une recette que les personnes avec ces aliment interdit peuvent manger : ${[...allergies, ...nonLikedIngredients].join(', ')}. Si, et seulement si, ces aliments interdit sont normalement utilisés dans la recette, tu dois obligatoirement les précier dans le titre et la description de la recette.`;
+    }
+    if (filters?.vegan) {
+      enrichedSystemMessage += ' La recette doit être vegan, tu dois obligatoirement les précier dans le titre et la description de la recette.';
+    }
+    if (filters?.lactoseFree) {
+      enrichedSystemMessage += ' La recette doit être sans lactose, tu dois obligatoirement les précier dans le titre et la description de la recette.';
+    }
+    if (filters?.calories) {
+      enrichedSystemMessage += ` La recette doit contenir ${filters.calories} calories, tu dois obligatoirement les précier dans le titre et la description de la recette.`;
     }
     const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
       {
