@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 
 import api from '@/plugins/axios';
+import { useAuthStore } from './authStore';
 
 export const useRecipeStore = defineStore('recipeStore', {
   getters: {
@@ -49,9 +50,11 @@ export const useRecipeStore = defineStore('recipeStore', {
     },
 
     async generateRecipe(prompt) {
+      const authStore = useAuthStore();
+      const filters = authStore.getFilters();
       this.isGenerateRecipeLoading = true;
       try {
-        const { data } = await api.post('recipes/generate', { prompt });
+        const { data } = await api.post('recipes/generate', { prompt, filters });
         this.recipe = data;
         return;
       } catch (error) {

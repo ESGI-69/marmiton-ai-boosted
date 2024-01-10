@@ -11,6 +11,8 @@ export const useAuthStore = defineStore('authStore', {
     isProfileLoading: false,
     profile: {},
 
+    filters: {},
+
     isRemoveAllergyLoading: false,
     isAddAllergyLoading: false,
 
@@ -123,6 +125,19 @@ export const useAuthStore = defineStore('authStore', {
       } finally {
         this.isRemoveNonLikedIngredientsLoading = false;
       }
+    },
+
+    setFilters(filters) {
+      localStorage.setItem('filters', JSON.stringify(filters));
+      this.filters = filters;
+    },
+
+    getFilters() {
+      const filters = localStorage.getItem('filters');
+      if (filters) {
+        this.filters = JSON.parse(filters);
+      }
+      return this.filters;
     },
 
     init() {

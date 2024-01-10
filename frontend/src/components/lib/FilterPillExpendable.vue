@@ -44,6 +44,10 @@ const emits = defineEmits([ 'update:active', 'update:selected' ]);
 
 const active = ref(false);
 
+if (props.selected) {
+  active.value = true;
+}
+
 const onClick = () => {
   // Closing the pill
   if (active.value) {
